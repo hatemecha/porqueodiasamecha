@@ -1,7 +1,6 @@
 # porqueodiasamecha
 
-![@hatemecha_home](src/assets/screenshots/hatemecha_home.png)
-
+![@hatemecha_home](src/assets/images/screenshots/hatemecha_home.png)
 Sitio web de @hatemecha.
 ## Introduccion
 Siempre quise tener un sitio web pero nunca pude idearlo de una manera que en serio se sienta mio. Con ayuda de el conocimiento que tengo en desarrollo web y algunas IA's logre hacer algo exactamente como lo imaginaba. No le di muchas vueltas y el resultado es este.
