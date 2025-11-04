@@ -1,6 +1,6 @@
 # porqueodiasamecha
 
-![@hatemecha_home](src/assets/images/hatemecha_home.png)
+![@hatemecha_home](src/assets/screenshots/hatemecha_home.png)
 
 Sitio web de @hatemecha.
 ## Introduccion
