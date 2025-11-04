@@ -1,6 +1,3 @@
-Perfecto. Acá tenés el texto **corregido y formateado en Markdown**, sin emojis y respetando tu tono original, solo ajustando gramática, tildes y puntuación para que quede profesional y legible como artículo técnico.
-
----
 
 # Instalación de LAMP en Ubuntu
 
@@ -90,9 +87,6 @@ En ese punto ya tendremos HTTPS funcionando.
 
 ## Fuentes
 
-- [https://www.youtube.com/watch?v=BCVQqMnt8XE](https://www.youtube.com/watch?v=BCVQqMnt8XE)
+- [Como instalar y configurar Ubuntu Server 24.04 - Tutorial COMPLETO](https://www.youtube.com/watch?v=BCVQqMnt8XE)
     
 
----
-
-¿Querés que te deje este también exportado en PDF con formato limpio tipo blog técnico (sin adornos ni emojis, solo texto, código y títulos)?
