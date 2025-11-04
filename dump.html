@@ -11,7 +11,7 @@
             body {
                 align-items: stretch;
                 justify-content: flex-start;
-                max-width: 614px;
+                max-width: 1100px;
                 margin: 0 auto;
                 padding: 0;
                 width: 100%;
@@ -56,64 +56,38 @@
                 letter-spacing: 0.02em;
                 font-family: "DrukWideBold", sans-serif;
                 font-size: 26px;
+                position: relative;
+                z-index: 1;
             }
 
             .posts {
                 display: flex;
                 flex-direction: column;
-                gap: 0;
+                gap: 80px;
+                padding: 0 20px 60px 20px;
                 width: 100%;
                 max-width: 100%;
+                position: relative;
+                z-index: 1;
             }
 
             .post {
-                background: var(--bg-secondary);
-                border: 1px solid var(--border-color);
-                border-top: none;
-                margin-bottom: 0;
-            }
-
-            .post:first-child {
-                border-top: 1px solid var(--border-color);
-            }
-
-            .post-header {
-                padding: 14px 16px;
-                border-bottom: 1px solid var(--border-color);
                 display: flex;
-                align-items: center;
-                gap: 12px;
+                align-items: flex-start;
+                gap: 60px;
             }
 
-            .post-avatar {
-                width: 32px;
-                height: 32px;
-                border-radius: 50%;
-                background: var(--link-color);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: white;
-                font-weight: bold;
-                font-size: 14px;
-                flex-shrink: 0;
+            .post:nth-child(even) {
+                flex-direction: row-reverse;
             }
 
-            .post-username {
-                font-weight: 600;
-                font-size: 14px;
-            }
-
-            .post-date {
-                margin-left: auto;
-                font-size: 12px;
-                opacity: 0.6;
-            }
 
             .post-media {
+                flex: 0 1 50%;
+                min-width: 0;
+                max-width: 50%;
                 position: relative;
-                width: 100%;
-                background: var(--bg-color);
+                background: #000;
                 overflow: hidden;
                 aspect-ratio: 1;
             }
@@ -135,14 +109,19 @@
 
             .carousel-slide {
                 min-width: 100%;
+                width: 100%;
                 height: 100%;
+                flex-shrink: 0;
                 position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
 
             .carousel-slide img {
                 width: 100%;
                 height: 100%;
-                object-fit: cover;
+                object-fit: contain;
                 display: block;
                 opacity: 0;
                 transition: opacity 300ms ease-out;
@@ -246,26 +225,84 @@
                 transform: scale(1.2);
             }
 
-            .post-content {
-                padding: 12px 16px;
+            .post-info {
+                flex: 0 1 50%;
+                min-width: 0;
+                max-width: 50%;
             }
 
-            .post-description {
-                margin: 0 0 8px 0;
-                line-height: 1.5;
-                font-size: 14px;
+            .post-info h2 {
+                margin: 0 0 10px 0;
+                font-size: 28px;
             }
 
-            .post-footer {
-                font-size: 12px;
+            .post-info p {
+                margin: 0;
+                line-height: 1.7;
+                opacity: 0.9;
+            }
+
+            .post-info .date {
+                margin-top: 6px;
                 opacity: 0.6;
                 font-style: italic;
+                line-height: 1.6;
+                position: relative;
+                z-index: 1;
+            }
+
+
+            @media (max-width: 1024px) {
+                body {
+                    max-width: 100%;
+                    padding: 0;
+                    width: 100%;
+                }
+                .posts {
+                    gap: 60px;
+                    padding: 25px 20px 50px 20px;
+                    max-width: 100%;
+                }
+                .post {
+                    gap: 40px;
+                }
+            }
+
+            @media (max-width: 900px) {
+                .post,
+                .post:nth-child(even) {
+                    flex-direction: column;
+                    gap: 24px;
+                }
+                .post-media {
+                    flex: 0 0 auto;
+                    width: 100%;
+                    max-width: 100%;
+                }
+                .post-info {
+                    flex: 0 0 auto;
+                    width: 100%;
+                    max-width: 100%;
+                }
+                .posts {
+                    max-width: 100%;
+                }
             }
 
             @media (max-width: 768px) {
                 body {
                     padding: 0;
-                    max-width: 100%;
+                    width: 100%;
+                }
+                .posts {
+                    padding: 0 15px 35px 15px;
+                }
+                header {
+                    padding-top: 10px;
+                    padding-bottom: 10px;
+                }
+                .header-title-wrapper {
+                    gap: 10px;
                 }
                 header nav ul {
                     gap: 30px;
@@ -273,13 +310,15 @@
                 }
                 .page-title {
                     font-size: 24px;
-                    padding: 18px 15px 10px 15px;
+                    margin: 8px 0 16px 0;
                 }
-                .post-header {
-                    padding: 12px 14px;
+                .posts {
+                    gap: 45px;
+                    padding: 18px 15px 35px 15px;
+                    max-width: 100%;
                 }
-                .post-content {
-                    padding: 10px 14px;
+                .post {
+                    gap: 18px;
                 }
                 .carousel-nav {
                     width: 28px;
@@ -292,33 +331,66 @@
                 .carousel-nav.next {
                     right: 8px;
                 }
+                .post-info h2 {
+                    font-size: 22px;
+                }
+                .post-info p {
+                    font-size: 15px;
+                    line-height: 1.6;
+                }
+                .post-info .date {
+                    font-size: 13px;
+                    margin-top: 8px;
+                }
             }
 
             @media (max-width: 480px) {
+                body {
+                    padding: 0;
+                    width: 100%;
+                }
+                .posts {
+                    padding: 0 10px 30px 10px;
+                }
+                header {
+                    padding-top: 8px;
+                    padding-bottom: 8px;
+                }
+                .header-title-wrapper {
+                    gap: 8px;
+                }
                 header nav ul {
                     gap: 20px;
                     font-size: 13px;
                 }
                 .page-title {
-                    font-size: 22px;
-                    padding: 16px 12px 8px 12px;
+                    font-size: 20px;
+                    margin: 6px 0 14px 0;
                 }
-                .post-header {
-                    padding: 10px 12px;
+                .posts {
+                    gap: 35px;
+                    padding: 15px 10px 30px 10px;
+                    max-width: 100%;
                 }
-                .post-content {
-                    padding: 8px 12px;
-                }
-                .post-description {
-                    font-size: 13px;
-                }
-                .post-footer {
-                    font-size: 11px;
+                .post {
+                    gap: 16px;
                 }
                 .carousel-nav {
                     width: 24px;
                     height: 24px;
                     font-size: 12px;
+                }
+                .post-info h2 {
+                    font-size: 19px;
+                    margin-bottom: 8px;
+                }
+                .post-info p {
+                    font-size: 14px;
+                    line-height: 1.55;
+                }
+                .post-info .date {
+                    font-size: 12px;
+                    margin-top: 6px;
                 }
             }
         </style>
@@ -334,31 +406,46 @@
         <script src="header.js"></script>
         <script src="footer.js"></script>
         <script>
-            // Ejemplo de estructura de posts:
-            // const postsData = [
-            //     {
-            //         date: '2025-01-15',
-            //         description: 'descripción del post',
-            //         images: [
-            //             'src/assets/images/dump/1/001.JPG',
-            //             'src/assets/images/dump/1/002.JPG'
-            //         ]
-            //     }
-            // ]
-
-            const postsData = []
-
-            function formatDate(iso) {
-                try {
-                    const date = new Date(iso)
-                    const day = date.getDate().toString().padStart(2, '0')
-                    const month = (date.getMonth() + 1).toString().padStart(2, '0')
-                    const year = date.getFullYear()
-                    return `${day}/${month}/${year}`
-                } catch (e) {
-                    return iso
+            const postsData = [
+                {
+                    title: 'habanito',
+                    description: 'con chicho conseguimos habanitos baratos, no nos dio el cuero para comprar habanos como tal',
+                    images: [
+                        'src/assets/images/dump/1/005.JPG',
+                        'src/assets/images/dump/1/010.JPG',
+                        'src/assets/images/dump/1/024.JPG',
+                        'src/assets/images/dump/1/025.JPG',
+                        'src/assets/images/dump/1/047.JPG',
+                        'src/assets/images/dump/1/048.JPG',
+                        'src/assets/images/dump/1/049.JPG',
+                        'src/assets/images/dump/1/053.JPG',
+                        'src/assets/images/dump/1/063.JPG',
+                        'src/assets/images/dump/1/064.JPG',
+                        'src/assets/images/dump/1/113.JPG'
+                    ]
+                },
+                {
+                    title: 'en lo del rodri',
+                    description: 'chicho se tatuo algo pero ni bola di, habia una paloma',
+                    images: [
+                        'src/assets/images/dump/2/_MG_3180.JPG',
+                        'src/assets/images/dump/2/_MG_3186.JPG',
+                        'src/assets/images/dump/2/_MG_3189.JPG'
+                    ]
+                },
+                {
+                    title: 'lululululu',
+                    description: 'en mayo salimos seguido con lulú',
+                    images: [
+                        'src/assets/images/dump/3/10-_MG_2989.jpg',
+                        'src/assets/images/dump/3/11-_MG_2988.jpg',
+                        'src/assets/images/dump/3/3-_MG_3002.jpg',
+                        'src/assets/images/dump/3/4-_MG_3001.jpg',
+                        'src/assets/images/dump/3/6-_MG_2999.jpg',
+                        'src/assets/images/dump/3/7-_MG_2997.jpg'
+                    ]
                 }
-            }
+            ]
 
             function createCarousel(images, postId) {
                 if (images.length === 0) return null
@@ -369,7 +456,6 @@
 
                 const track = document.createElement('div')
                 track.className = 'carousel-track'
-                track.style.width = `${images.length * 100}%`
 
                 images.forEach((src, index) => {
                     const slide = document.createElement('div')
@@ -472,7 +558,9 @@
 
             function updateCarousel(container, index, slides, dots) {
                 const track = container.querySelector('.carousel-track')
-                track.style.transform = `translateX(-${index * (100 / slides.length)}%)`
+                if (!track || !slides.length) return
+                
+                track.style.transform = `translateX(-${index * 100}%)`
 
                 dots.forEach((dot, i) => {
                     if (i === index) {
@@ -492,25 +580,6 @@
                 const postEl = document.createElement('div')
                 postEl.className = 'post'
 
-                const header = document.createElement('div')
-                header.className = 'post-header'
-
-                const avatar = document.createElement('div')
-                avatar.className = 'post-avatar'
-                avatar.textContent = 'h'
-
-                const username = document.createElement('div')
-                username.className = 'post-username'
-                username.textContent = 'hatemecha'
-
-                const date = document.createElement('div')
-                date.className = 'post-date'
-                date.textContent = formatDate(post.date)
-
-                header.appendChild(avatar)
-                header.appendChild(username)
-                header.appendChild(date)
-
                 const media = document.createElement('div')
                 media.className = 'post-media'
                 const carousel = createCarousel(post.images, `post-${index}`)
@@ -518,32 +587,31 @@
                     media.appendChild(carousel)
                 }
 
-                const content = document.createElement('div')
-                content.className = 'post-content'
+                const info = document.createElement('div')
+                info.className = 'post-info'
 
-                const description = document.createElement('p')
-                description.className = 'post-description'
-                description.textContent = post.description
+                if (post.title) {
+                    const title = document.createElement('h2')
+                    title.textContent = post.title
+                    info.appendChild(title)
+                }
 
-                const footer = document.createElement('div')
-                footer.className = 'post-footer'
-                footer.textContent = formatDate(post.date)
+                if (post.description) {
+                    const description = document.createElement('p')
+                    description.textContent = post.description
+                    info.appendChild(description)
+                }
 
-                content.appendChild(description)
-                content.appendChild(footer)
-
-                postEl.appendChild(header)
                 postEl.appendChild(media)
-                postEl.appendChild(content)
+                postEl.appendChild(info)
 
                 return postEl
             }
 
-            // Descomentar para renderizar posts:
-            // const postsEl = document.getElementById('posts')
-            // postsData.forEach((post, index) => {
-            //     postsEl.appendChild(createPost(post, index))
-            // })
+            const postsEl = document.getElementById('posts')
+            postsData.forEach((post, index) => {
+                postsEl.appendChild(createPost(post, index))
+            })
         </script>
     </body>
 </html>
