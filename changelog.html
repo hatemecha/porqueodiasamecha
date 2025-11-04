@@ -68,33 +68,20 @@
                 gap: 32px;
             }
 
-            .version {
+            .date-entry {
                 background: var(--bg-secondary);
                 border: 1px solid var(--border-color);
                 padding: 20px;
             }
 
-            .version-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                margin-bottom: 12px;
-                padding-bottom: 8px;
-                border-bottom: 1px solid var(--border-color);
-            }
-
-            .version-number {
+            .date-header {
                 font-family: "DrukWideBold", sans-serif;
                 font-size: 18px;
                 color: var(--link-color);
+                margin-bottom: 16px;
             }
 
-            .version-date {
-                opacity: 0.6;
-                font-size: 13px;
-            }
-
-            .version-changes {
+            .date-changes {
                 display: flex;
                 flex-direction: column;
                 gap: 8px;
@@ -125,7 +112,7 @@
                     padding: 20px 15px 40px 15px;
                     max-width: 100%;
                 }
-                .version {
+                .date-entry {
                     padding: 16px;
                 }
             }
@@ -138,10 +125,8 @@
                 .page-title {
                     font-size: 22px;
                 }
-                .version-header {
-                    flex-direction: column;
-                    align-items: flex-start;
-                    gap: 6px;
+                .date-header {
+                    font-size: 16px;
                 }
             }
         </style>
@@ -161,10 +146,9 @@
         <script>
             const changelogData = [
                 {
-                    version: '1.0.0',
-                    date: '2025-11-03',
+                    date: '2025-11-04',
                     changes: [
-                        'Primera versión del sitio',
+                        'Release 1.0.0',
                     ]
                 }
             ]
@@ -173,26 +157,39 @@
 
             function formatDate(iso) {
                 try {
-                    const d = new Date(iso)
-                    return d.toLocaleDateString('es-AR', {
-                        year: 'numeric',
-                        month: 'short',
-                        day: '2-digit'
-                    })
+                    const parts = iso.split('-')
+                    if (parts.length === 3) {
+                        const year = parts[0]
+                        const month = parts[1]
+                        const day = parts[2]
+                        return `${day} - ${month} - ${year}`
+                    }
+                    return iso
                 } catch (e) {
                     return iso
                 }
             }
 
+            function groupByDate(data) {
+                const grouped = {}
+                data.forEach(entry => {
+                    if (!grouped[entry.date]) {
+                        grouped[entry.date] = []
+                    }
+                    grouped[entry.date].push(...entry.changes)
+                })
+                return grouped
+            }
+
             function renderChangelog() {
-                changelogEl.innerHTML = changelogData.map(version => `
-                    <div class="version">
-                        <div class="version-header">
-                            <span class="version-number">${version.version}</span>
-                            <span class="version-date">${formatDate(version.date)}</span>
-                        </div>
-                        <div class="version-changes">
-                            ${version.changes.map(change => `
+                const grouped = groupByDate(changelogData)
+                const sortedDates = Object.keys(grouped).sort((a, b) => new Date(b) - new Date(a))
+                
+                changelogEl.innerHTML = sortedDates.map(date => `
+                    <div class="date-entry">
+                        <div class="date-header">${formatDate(date)}</div>
+                        <div class="date-changes">
+                            ${grouped[date].map(change => `
                                 <div class="change-item">${change}</div>
                             `).join('')}
                         </div>
