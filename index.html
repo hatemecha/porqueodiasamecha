@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>hatemecha</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+        <link rel="stylesheet" href="styles.css" />
+        <style>
+            body {
+                padding: 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+                overflow-y: auto;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+            }
+
+            body::-webkit-scrollbar {
+                display: none;
+            }
+
+            .content-box {
+                display: inline-flex;
+                flex-direction: column;
+                align-items: center;
+                max-width: 100%;
+            }
+
+            header {
+                margin-bottom: 20px;
+                width: 100%;
+                order: -1;
+            }
+
+            header nav {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+            }
+
+            header nav ul {
+                gap: 40px;
+                white-space: nowrap;
+                display: flex;
+                width: auto;
+            }
+
+            .header-title-wrapper {
+                grid-template-columns: auto 1fr auto;
+                gap: 12px;
+                width: 100%;
+            }
+
+            #canvas-container {
+                width: 300px;
+                height: 225px;
+                max-width: 100%;
+                margin: 0 auto;
+            }
+
+            footer {
+                width: fit-content;
+                max-width: 100%;
+            }
+
+            @media (max-width: 768px) {
+                body {
+                    padding: 15px;
+                }
+
+                .content-box {
+                    max-width: 100%;
+                }
+
+                header nav ul {
+                    gap: 30px;
+                }
+            }
+
+            @media (max-width: 480px) {
+                .header-title-wrapper {
+                    gap: 10px;
+                }
+
+                header nav ul {
+                    gap: 20px;
+                    font-size: 14px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="content-box">
+            <header></header>
+
+            <div id="canvas-container"></div>
+
+            <footer></footer>
+        </div>
+
+        <script type="importmap">
+            {
+                "imports": {
+                    "three": "https://unpkg.com/three@0.169.0/build/three.module.js",
+                    "three/addons/": "https://unpkg.com/three@0.169.0/examples/jsm/"
+                }
+            }
+        </script>
+
+        <script src="header.js"></script>
+        <script src="footer.js"></script>
+        <script type="module" src="main.js"></script>
+    </body>
+</html>

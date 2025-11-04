@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>lab — hatemecha</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        />
+        <link rel="stylesheet" href="styles.css" />
+        <style>
+            body {
+                display: flex;
+                flex-direction: column;
+                align-items: stretch;
+                justify-content: flex-start;
+                max-width: 1100px;
+                margin: 0 auto;
+                padding: 0;
+                width: 100%;
+                overflow-y: auto;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+            }
+
+            body::-webkit-scrollbar {
+                display: none;
+            }
+
+            header {
+                position: sticky;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 1000;
+                background: var(--header-bg);
+                backdrop-filter: blur(6px);
+                border-bottom: 1px solid var(--border-color);
+                padding-top: 14px;
+                padding-bottom: 14px;
+                width: 100%;
+                margin: 0;
+                order: -1;
+            }
+
+            .header-title-wrapper {
+                grid-template-columns: auto 1fr auto;
+                gap: 12px;
+            }
+
+            header nav ul {
+                gap: 40px;
+            }
+
+            .page-title {
+                margin: 10px 0 20px 0;
+                text-align: center;
+                letter-spacing: 0.02em;
+                font-family: "DrukWideBold", sans-serif;
+                font-size: 26px;
+                width: 100%;
+            }
+
+            .blog {
+                display: grid;
+                grid-template-columns: 320px 1fr;
+                gap: 32px;
+                padding: 30px 20px 60px 20px;
+                width: 100%;
+                max-width: 100%;
+            }
+
+            .posts {
+                display: flex;
+                flex-direction: column;
+                gap: 24px;
+            }
+
+            .category {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .category-title {
+                font-size: 14px;
+                font-weight: 600;
+                letter-spacing: 0.03em;
+                text-transform: uppercase;
+                opacity: 0.4;
+                margin-bottom: 4px;
+                padding-left: 2px;
+            }
+
+            .post-card {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+                border: 1px solid var(--border-color);
+                background: var(--bg-secondary);
+                padding: 12px 14px;
+                transition:
+                    transform 0.1s ease,
+                    color 0.2s ease;
+                text-decoration: none;
+                color: var(--text-color);
+            }
+
+            .post-card:hover {
+                transform: translateY(-2px);
+                color: var(--link-color);
+            }
+
+            .post-card h3 {
+                margin: 0;
+                font-size: 18px;
+            }
+
+            .post-meta {
+                opacity: 0.6;
+                font-size: 13px;
+            }
+
+            article {
+                background: var(--bg-secondary);
+                border: 1px solid var(--border-color);
+                padding: 20px;
+                min-width: 0;
+            }
+
+            article h1 {
+                margin-top: 0;
+            }
+
+            .article-meta {
+                margin: 8px 0 22px 0;
+                opacity: 0.6;
+                font-size: 14px;
+            }
+
+            #article-content {
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                line-height: 1.6;
+            }
+
+            #article-content img {
+                max-width: 100%;
+                height: auto;
+            }
+
+            #article-content pre {
+                overflow-x: hidden;
+                max-width: 100%;
+                white-space: pre-wrap;
+                word-wrap: break-word;
+            }
+
+            #article-content pre code,
+            #article-content code {
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                white-space: pre-wrap;
+            }
+
+            #article-content table {
+                max-width: 100%;
+                display: block;
+                overflow-x: hidden;
+                white-space: pre-wrap;
+            }
+
+            #article-content blockquote,
+            #article-content p,
+            #article-content div,
+            #article-content ul,
+            #article-content ol {
+                max-width: 100%;
+                overflow-wrap: break-word;
+            }
+
+            main {
+                width: 100%;
+            }
+
+            aside,
+            section {
+                min-width: 0;
+            }
+
+            @media (max-width: 900px) {
+                .blog {
+                    grid-template-columns: 1fr;
+                    gap: 24px;
+                    padding: 20px 15px 40px 15px;
+                    max-width: 100%;
+                }
+            }
+
+            @media (max-width: 768px) {
+                header nav ul {
+                    gap: 30px;
+                    font-size: 14px;
+                }
+                .blog {
+                    padding: 20px 15px 30px 15px;
+                    max-width: 100%;
+                }
+                article {
+                    padding: 16px;
+                }
+            }
+
+            @media (max-width: 480px) {
+                header {
+                    padding: 14px 10px;
+                }
+                header nav ul {
+                    gap: 20px;
+                    font-size: 13px;
+                }
+                .page-title {
+                    font-size: 22px;
+                }
+                .posts {
+                    gap: 18px;
+                }
+                .category-title {
+                    font-size: 12px;
+                }
+                .post-card {
+                    padding: 10px 12px;
+                }
+                .post-card h3 {
+                    font-size: 16px;
+                }
+                article {
+                    padding: 12px;
+                }
+                .blog {
+                    max-width: 100%;
+                }
+            }
+        </style>
+        <script src="https://unpkg.com/marked/marked.min.js" defer></script>
+        <script
+            src="https://unpkg.com/dompurify@3.0.9/dist/purify.min.js"
+            defer
+        ></script>
+    </head>
+    <body>
+        <header></header>
+
+        <h2 class="page-title">lab</h2>
+
+        <main class="blog">
+            <aside>
+                <div class="posts" id="posts"></div>
+            </aside>
+            <section>
+                <article id="article">
+                    <h1 id="article-title"></h1>
+                    <p class="article-meta" id="article-meta"></p>
+                    <div id="article-content"></div>
+                </article>
+            </section>
+        </main>
+
+        <script>
+            (() => {
+                const loadScript = (src) =>
+                    new Promise((resolve, reject) => {
+                        const s = document.createElement("script");
+                        s.src = src;
+                        s.async = false;
+                        s.onload = () => resolve();
+                        s.onerror = () =>
+                            reject(new Error("No se pudo cargar " + src));
+                        document.head.appendChild(s);
+                    });
+
+                const ensureLibs = async () => {
+                    const hasMarked = () =>
+                        typeof window.marked !== "undefined";
+                    const hasPurify = () =>
+                        typeof window.DOMPurify !== "undefined";
+
+                    if (!hasMarked()) {
+                        const candidates = [
+                            "https://cdn.jsdelivr.net/npm/marked/marked.min.js",
+                        ];
+                        for (const url of candidates) {
+                            try {
+                                await loadScript(url);
+                                if (hasMarked()) break;
+                            } catch {}
+                        }
+                    }
+
+                    if (!hasPurify()) {
+                        const candidates = [
+                            "https://cdn.jsdelivr.net/npm/dompurify@3.0.9/dist/purify.min.js",
+                        ];
+                        for (const url of candidates) {
+                            try {
+                                await loadScript(url);
+                                if (hasPurify()) break;
+                            } catch {}
+                        }
+                    }
+                };
+
+                const init = () => {
+                    const posts = [
+                        {
+                            slug: "ubuntu-install",
+                            title: "Instalación de Ubuntu Server",
+                            path: "src/content/markdown/Proyecto Server/01-ubuntu.md",
+                            category: "Proyecto Server",
+                            createdAt: "2025-10-11",
+                            updatedAt: "2025-10-11",
+                        },
+                        {
+                            slug: "lamp-setup",
+                            title: "Instalación de LAMP en Ubuntu",
+                            path: "src/content/markdown/Proyecto Server/02-lamp.md",
+                            category: "Proyecto Server",
+                            createdAt: "2025-10-11",
+                            updatedAt: "2025-10-11",
+                        },
+                    ];
+
+                    const qs = (sel) => document.querySelector(sel);
+                    const postsEl = qs("#posts");
+                    const articleEl = qs("#article-content");
+                    const articleTitleEl = qs("#article-title");
+                    const articleMetaEl = qs("#article-meta");
+
+                    const formatDate = (iso) => {
+                        try {
+                            const d = new Date(iso);
+                            return d.toLocaleDateString("es-AR", {
+                                year: "numeric",
+                                month: "short",
+                                day: "2-digit",
+                            });
+                        } catch (e) {
+                            return iso;
+                        }
+                    };
+
+                    const extractTitleFromMarkdown = (md) => {
+                        const m = md.match(/^#\s+(.+)$/m);
+                        return m ? m[1].replace(/\*\*/g, "").trim() : null;
+                    };
+
+                    const renderList = () => {
+                        postsEl.innerHTML = "";
+                        
+                        const grouped = posts.reduce((acc, post) => {
+                            const cat = post.category || "Sin categoría";
+                            if (!acc[cat]) acc[cat] = [];
+                            acc[cat].push(post);
+                            return acc;
+                        }, {});
+                        
+                        Object.keys(grouped).forEach(category => {
+                            const catDiv = document.createElement("div");
+                            catDiv.className = "category";
+                            
+                            const titleDiv = document.createElement("div");
+                            titleDiv.className = "category-title";
+                            titleDiv.textContent = category;
+                            catDiv.appendChild(titleDiv);
+                            
+                            grouped[category].forEach(post => {
+                                const a = document.createElement("a");
+                                a.href = `?post=${encodeURIComponent(post.slug)}`;
+                                a.className = "post-card";
+                                a.innerHTML = `
+                                    <h3>${post.title}</h3>
+                                    <div class="post-meta">
+                                        creado: ${formatDate(post.createdAt)} · actualizado: ${formatDate(post.updatedAt)}
+                                    </div>
+                                `;
+                                catDiv.appendChild(a);
+                            });
+                            
+                            postsEl.appendChild(catDiv);
+                        });
+                    };
+
+                    const getPostBySlug = (slug) =>
+                        posts.find((p) => p.slug === slug);
+
+                    const loadMarkdown = async (post) => {
+                        try {
+                            const res = await fetch(post.path, {
+                                cache: "no-cache",
+                            });
+                            if (!res.ok)
+                                throw new Error(
+                                    "No se pudo cargar el artículo",
+                                );
+                            const md = await res.text();
+
+                            // Título: usar del manifiesto o extraer del MD (H1)
+                            const extracted = extractTitleFromMarkdown(md);
+                            const title = post.title || extracted || "Artículo";
+                            articleTitleEl.textContent = title;
+
+                            // Metadatos
+                            articleMetaEl.textContent = `creado: ${formatDate(post.createdAt)} · actualizado: ${formatDate(post.updatedAt)}`;
+
+                            // Render seguro
+                            if (!window.marked)
+                                throw new Error("marked no disponible");
+                            if (!window.DOMPurify)
+                                throw new Error("DOMPurify no disponible");
+                            const html = window.marked.parse(md, {
+                                mangle: false,
+                                headerIds: true,
+                            });
+                            articleEl.innerHTML =
+                                window.DOMPurify.sanitize(html);
+                        } catch (e) {
+                            articleTitleEl.textContent =
+                                "Error cargando artículo";
+                            articleMetaEl.textContent = "";
+                            articleEl.textContent = e.message || String(e);
+                        }
+                    };
+
+                    const route = () => {
+                        const params = new URLSearchParams(location.search);
+                        const slug = params.get("post") || posts[0]?.slug;
+                        const post = slug ? getPostBySlug(slug) : null;
+                        if (post) loadMarkdown(post);
+                    };
+
+                    // Navegación SPA mínima
+                    window.addEventListener("click", (e) => {
+                        const a = e.target.closest("a.post-card");
+                        if (!a) return;
+                        const url = new URL(a.href);
+                        e.preventDefault();
+                        history.pushState(
+                            {},
+                            "",
+                            `?post=${url.searchParams.get("post")}`,
+                        );
+                        route();
+                    });
+
+                    window.addEventListener("popstate", route);
+
+                    renderList();
+                    route();
+                };
+
+                const ready = () =>
+                    typeof window.marked !== "undefined" &&
+                    typeof window.DOMPurify !== "undefined";
+                if (ready()) {
+                    init();
+                } else {
+                    window.addEventListener("load", async () => {
+                        await ensureLibs();
+                        init();
+                    });
+                }
+            })();
+        </script>
+        <footer></footer>
+        <script src="header.js"></script>
+        <script src="footer.js"></script>
+    </body>
+</html>

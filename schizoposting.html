@@ -1,0 +1,683 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>esquizoposts — hatemecha</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        />
+        <link rel="stylesheet" href="styles.css" />
+        <style>
+            body {
+                align-items: stretch;
+                justify-content: flex-start;
+                max-width: 1100px;
+                margin: 0 auto;
+                padding: 0;
+                width: 100%;
+                overflow-y: auto;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+            }
+
+            body::-webkit-scrollbar {
+                display: none;
+            }
+
+            header {
+                position: sticky;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 1000;
+                background: var(--header-bg);
+                backdrop-filter: blur(6px);
+                border-bottom: 1px solid var(--border-color);
+                padding-top: 14px;
+                padding-bottom: 14px;
+                width: 100%;
+                margin: 0;
+                order: -1;
+            }
+
+            .header-title-wrapper {
+                grid-template-columns: auto 1fr auto;
+                gap: 12px;
+            }
+
+            header nav ul {
+                gap: 40px;
+            }
+
+            .page-title {
+                margin: 0;
+                padding: 20px 20px 10px 20px;
+                text-align: center;
+                letter-spacing: 0.02em;
+                font-family: "DrukWideBold", sans-serif;
+                font-size: 26px;
+            }
+
+            .works {
+                display: flex;
+                flex-direction: column;
+                gap: 80px;
+                padding: 0 20px 60px 20px;
+                width: 100%;
+                max-width: 100%;
+                position: relative;
+                z-index: 1;
+            }
+
+            .work {
+                display: flex;
+                align-items: flex-start;
+                gap: 60px;
+            }
+
+            .work:nth-child(even) {
+                flex-direction: row-reverse;
+            }
+
+            .media {
+                flex: 0 1 50%;
+                min-width: 0;
+                max-width: 50%;
+                border: 2px solid var(--border-color);
+                background: var(--bg-secondary);
+                display: flex;
+                align-items: flex-start;
+                justify-content: center;
+                position: relative;
+                min-height: 200px;
+            }
+
+            .media img {
+                width: 100%;
+                max-width: 100%;
+                height: auto;
+                object-fit: contain;
+                display: block;
+                transition: opacity 300ms ease-out;
+                opacity: 0;
+                box-sizing: border-box;
+            }
+
+            .media img.loaded {
+                opacity: 1;
+            }
+
+            .media::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(
+                    90deg,
+                    var(--bg-secondary) 0%,
+                    var(--bg-secondary) 40%,
+                    rgba(255, 255, 255, 0.05) 50%,
+                    var(--bg-secondary) 60%,
+                    var(--bg-secondary) 100%
+                );
+                background-size: 200% 100%;
+                animation: shimmer 1.5s infinite;
+                z-index: 1;
+                pointer-events: none;
+            }
+
+            .media:has(img.loaded)::before {
+                display: none;
+            }
+
+            @keyframes shimmer {
+                0% {
+                    background-position: -200% 0;
+                }
+                100% {
+                    background-position: 200% 0;
+                }
+            }
+
+            .info {
+                flex: 0 1 50%;
+                min-width: 0;
+                max-width: 50%;
+            }
+
+            .info h2 {
+                margin: 0 0 10px 0;
+                font-size: 28px;
+            }
+
+            .info p {
+                margin: 0;
+                line-height: 1.7;
+                opacity: 0.9;
+            }
+
+            .info .date {
+                margin-top: 6px;
+                opacity: 0.6;
+                font-style: italic;
+                line-height: 1.6;
+                position: relative;
+                z-index: 1;
+            }
+
+            @media (max-width: 1024px) {
+                body {
+                    max-width: 100%;
+                    padding: 0;
+                    width: 100%;
+                }
+                .works {
+                    gap: 60px;
+                    padding: 25px 20px 50px 20px;
+                    max-width: 100%;
+                }
+                .work {
+                    gap: 40px;
+                }
+            }
+
+            @media (max-width: 900px) {
+                .work,
+                .work:nth-child(even) {
+                    flex-direction: column;
+                    gap: 24px;
+                }
+                .media {
+                    flex: 0 0 auto;
+                    width: 100%;
+                    max-width: 100%;
+                    min-height: 180px;
+                }
+                .info {
+                    flex: 0 0 auto;
+                    width: 100%;
+                    max-width: 100%;
+                }
+                .works {
+                    max-width: 100%;
+                }
+            }
+
+            @media (max-width: 768px) {
+                body {
+                    padding: 0;
+                    width: 100%;
+                }
+                .works {
+                    padding: 0 15px 35px 15px;
+                }
+                header {
+                    padding-top: 10px;
+                    padding-bottom: 10px;
+                }
+                .header-title-wrapper {
+                    gap: 10px;
+                }
+                header nav ul {
+                    gap: 30px;
+                    font-size: 14px;
+                }
+                .page-title {
+                    font-size: 24px;
+                    margin: 8px 0 16px 0;
+                }
+                .works {
+                    gap: 45px;
+                    padding: 18px 15px 35px 15px;
+                    max-width: 100%;
+                }
+                .work {
+                    gap: 18px;
+                }
+                .media {
+                    min-height: 160px;
+                }
+                .info h2 {
+                    font-size: 22px;
+                }
+                .info p {
+                    font-size: 15px;
+                    line-height: 1.6;
+                }
+                .info .date {
+                    font-size: 13px;
+                    margin-top: 8px;
+                }
+            }
+
+            @media (max-width: 480px) {
+                body {
+                    padding: 0;
+                    width: 100%;
+                }
+                .works {
+                    padding: 0 10px 30px 10px;
+                }
+                header {
+                    padding-top: 8px;
+                    padding-bottom: 8px;
+                }
+                .header-title-wrapper {
+                    gap: 8px;
+                }
+                header nav ul {
+                    gap: 20px;
+                    font-size: 13px;
+                }
+                .page-title {
+                    font-size: 20px;
+                    margin: 6px 0 14px 0;
+                }
+                .works {
+                    gap: 35px;
+                    padding: 15px 10px 30px 10px;
+                    max-width: 100%;
+                }
+                .work {
+                    gap: 16px;
+                }
+                .media {
+                    min-height: 140px;
+                    border-width: 1.5px;
+                }
+                .info h2 {
+                    font-size: 19px;
+                    margin-bottom: 8px;
+                }
+                .info p {
+                    font-size: 14px;
+                    line-height: 1.55;
+                }
+                .info .date {
+                    font-size: 12px;
+                    margin-top: 6px;
+                }
+            }
+
+            @media (max-width: 360px) {
+                body {
+                    padding: 0;
+                    width: 100%;
+                }
+                .works {
+                    padding: 0 8px 25px 8px;
+                }
+                header nav ul {
+                    gap: 16px;
+                    font-size: 12px;
+                }
+                .page-title {
+                    font-size: 18px;
+                }
+                .works {
+                    gap: 30px;
+                    padding: 12px 8px 25px 8px;
+                    max-width: 100%;
+                }
+                .info h2 {
+                    font-size: 17px;
+                }
+                .info p {
+                    font-size: 13px;
+                }
+            }
+
+            @media (max-height: 500px) and (orientation: landscape) {
+                .works {
+                    gap: 30px;
+                    padding: 15px 20px 25px 20px;
+                    max-width: 100%;
+                }
+                .media {
+                    min-height: 120px;
+                }
+            }
+
+            /* Lightbox */
+            #lightbox {
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.95);
+                display: none;
+                align-items: center;
+                justify-content: center;
+                z-index: 1000;
+                padding: 20px;
+                box-sizing: border-box;
+            }
+
+            #lightbox.open {
+                display: flex;
+            }
+
+            #lightbox img {
+                max-width: 100%;
+                max-height: 100%;
+                width: auto;
+                height: auto;
+                object-fit: contain;
+                box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+            }
+
+            #lightbox .close {
+                position: absolute;
+                top: 16px;
+                right: 20px;
+                background: rgba(0, 0, 0, 0.5);
+                border: 2px solid rgba(255, 255, 255, 0.3);
+                border-radius: 50%;
+                color: #ffffff;
+                font-size: 32px;
+                line-height: 1;
+                cursor: pointer;
+                width: 44px;
+                height: 44px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition:
+                    background 0.2s ease,
+                    border-color 0.2s ease;
+            }
+
+            #lightbox .close:hover {
+                background: rgba(0, 0, 0, 0.7);
+                border-color: rgba(255, 255, 255, 0.5);
+            }
+
+            @media (max-width: 768px) {
+                #lightbox {
+                    padding: 15px;
+                }
+                #lightbox img {
+                    max-width: 100%;
+                    max-height: calc(100vh - 80px);
+                }
+                #lightbox .close {
+                    top: 12px;
+                    right: 16px;
+                    width: 40px;
+                    height: 40px;
+                    font-size: 28px;
+                }
+            }
+
+            @media (max-width: 480px) {
+                #lightbox {
+                    padding: 10px;
+                }
+                #lightbox img {
+                    max-height: calc(100vh - 70px);
+                }
+                #lightbox .close {
+                    top: 10px;
+                    right: 12px;
+                    width: 36px;
+                    height: 36px;
+                    font-size: 24px;
+                    border-width: 1.5px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <header></header>
+
+        <h2 class="page-title">esquizoposts</h2>
+
+        <main class="works">
+            <section class="work">
+                <div class="media">
+                    <img
+                        src="src/assets/images/esquizoposts/130.JPG"
+                        alt="michi cybersigilista 1"
+                        loading="eager"
+                        fetchpriority="high"
+                        decoding="async"
+                    />
+                </div>
+                <div class="info">
+                    <h2>michi y cybersigilismo</h2>
+                    <p>
+                        tuve una epoca donde hacia cybersigilismo cuando me
+                        aburria, me haria un tatuaje así honestamente.
+                    </p>
+                    <p class="date">20/03/2025</p>
+                </div>
+            </section>
+            <section class="work">
+                <div class="media">
+                    <img
+                        src="src/assets/images/esquizoposts/131.JPG"
+                        alt="obra 2"
+                        loading="eager"
+                        fetchpriority="high"
+                        decoding="async"
+                    />
+                </div>
+                <div class="info">
+                    <h2>random</h2>
+                    <p>
+                        se me mezclaron varias ideas y salio esto, no recuerdo.
+                    </p>
+                    <p class="date">14/04/2025</p>
+                </div>
+            </section>
+            <section class="work">
+                <div class="media">
+                    <img
+                        src="src/assets/images/esquizoposts/132.JPG"
+                        alt="obra 2"
+                        loading="eager"
+                        fetchpriority="high"
+                        decoding="async"
+                    />
+                </div>
+                <div class="info">
+                    <h2>marioneta / la mandarina mecanica</h2>
+                    <p>
+                        estabamos en clase con lu y habia un jugo de mandarina
+                        creo. Me acorde de la naranja mecanica e hice esto por
+                        aburrimiento.
+                    </p>
+                    <p class="date">13/05/2025</p>
+                </div>
+            </section>
+            <section class="work">
+                <div class="media">
+                    <img
+                        src="src/assets/images/esquizoposts/133.JPG"
+                        alt="obra 2"
+                        loading="eager"
+                        fetchpriority="high"
+                        decoding="async"
+                    />
+                </div>
+                <div class="info">
+                    <h2>dj</h2>
+                    <p>
+                        le compre 40 fibrones dobles a mi hermanito y los
+                        termine usando yo.
+                    </p>
+                    <p class="date">18/06/2025</p>
+                </div>
+            </section>
+            <section class="work">
+                <div class="media">
+                    <img
+                        src="src/assets/images/esquizoposts/134.JPG"
+                        alt="obra 2"
+                        loading="eager"
+                        fetchpriority="high"
+                        decoding="async"
+                    />
+                </div>
+                <div class="info">
+                    <h2>PERDON !!</h2>
+                    <p>
+                        ME CUESTA DESAPEGARME DE MIS CRIMENES
+                        <i>involuntarios</i>
+                    </p>
+                    <p class="date">???</p>
+                </div>
+            </section>
+            <section class="work">
+                <div class="media">
+                    <img
+                        src="src/assets/images/esquizoposts/135.JPG"
+                        alt="obra 2"
+                        loading="eager"
+                        fetchpriority="high"
+                        decoding="async"
+                    />
+                </div>
+                <div class="info">
+                    <h2>libreta</h2>
+                    <p>cosas que hacia en mi libreta hace años</p>
+                    <p class="date">11/05/2023</p>
+                </div>
+            </section>
+            <section class="work">
+                <div class="media">
+                    <img
+                        src="src/assets/images/esquizoposts/136.JPG"
+                        alt="obra 2"
+                        loading="eager"
+                        fetchpriority="high"
+                        decoding="async"
+                    />
+                </div>
+                <div class="info">
+                    <h2>libreta</h2>
+                    <p>cosas que hacia en mi libreta hace años</p>
+                    <p class="date">11/05/2023</p>
+                </div>
+            </section>
+            <section class="work">
+                <div class="media">
+                    <img
+                        src="src/assets/images/esquizoposts/137.JPG"
+                        alt="obra 2"
+                        loading="eager"
+                        fetchpriority="high"
+                        decoding="async"
+                    />
+                </div>
+                <div class="info">
+                    <h2>libreta</h2>
+                    <p>cosas que hacia en mi libreta hace años</p>
+                    <p class="date">11/05/2023</p>
+                </div>
+            </section>
+            <section class="work">
+                <div class="media">
+                    <img
+                        src="src/assets/images/esquizoposts/138.JPG"
+                        alt="obra 2"
+                        loading="eager"
+                        fetchpriority="high"
+                        decoding="async"
+                    />
+                </div>
+                <div class="info">
+                    <h2>eva de produccion en masa</h2>
+                    <p>me gusta evangelion</p>
+                    <p class="date">11/10/2024</p>
+                </div>
+            </section>
+
+            <!-- PLACEHOLDER: Plantilla para agregar nuevas obras
+            <section class="work">
+                <div class="media">
+                    <img src="src/assets/images/esquizoposts/ruta-a-imagen.jpg" alt="nombre obra" loading="lazy" />
+                </div>
+                <div class="info">
+                    <h2>nombre de la obra</h2>
+                    <p>descripcion breve, año, técnica, notas</p>
+                    <p class="date">fecha</p>
+                </div>
+            </section>
+            -->
+
+            <!-- PLACEHOLDER: Ejemplo con imagen externa
+            <section class="work">
+                <div class="media">
+                    <img src="https://picsum.photos/seed/obra2/1200/900" alt="obra 2" loading="lazy" />
+                </div>
+                <div class="info">
+                    <h2>otra obra con nombre</h2>
+                    <p>descripcion breve, año, técnica, notas</p>
+                    <p class="date">11/10/2023</p>
+                </div>
+            </section>
+            -->
+        </main>
+        <div id="lightbox" aria-hidden="true" role="dialog">
+            <button class="close" aria-label="Cerrar">×</button>
+            <img alt="vista ampliada" />
+        </div>
+        <script>
+            (() => {
+                const lightbox = document.getElementById("lightbox");
+                const lightboxImg = lightbox.querySelector("img");
+
+                document.querySelectorAll(".media img").forEach((img) => {
+                    img.style.cursor = "zoom-in";
+
+                    img.addEventListener(
+                        "load",
+                        function () {
+                            this.classList.add("loaded");
+                        },
+                        { once: true },
+                    );
+
+                    img.addEventListener(
+                        "error",
+                        function () {
+                            this.classList.add("loaded");
+                        },
+                        { once: true },
+                    );
+
+                    if (img.complete && img.naturalHeight !== 0) {
+                        img.classList.add("loaded");
+                    }
+
+                    img.addEventListener("click", () => {
+                        lightboxImg.src = img.currentSrc || img.src;
+                        lightbox.classList.add("open");
+                        lightbox.setAttribute("aria-hidden", "false");
+                        document.body.style.overflow = "hidden";
+                    });
+                });
+
+                const close = () => {
+                    lightbox.classList.remove("open");
+                    lightbox.setAttribute("aria-hidden", "true");
+                    lightboxImg.src = "";
+                    document.body.style.overflow = "";
+                };
+
+                lightbox.addEventListener("click", (e) => {
+                    if (e.target === lightbox) close();
+                });
+                lightbox
+                    .querySelector(".close")
+                    .addEventListener("click", close);
+                window.addEventListener("keydown", (e) => {
+                    if (e.key === "Escape") close();
+                });
+            })();
+        </script>
+        <footer></footer>
+        <script src="header.js"></script>
+        <script src="footer.js"></script>
+    </body>
+</html>
