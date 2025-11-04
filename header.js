@@ -20,6 +20,7 @@
     { url: 'lab.html', label: 'lab' },
     { url: 'musica.html', label: 'musica' },
     { url: 'fotos.html', label: 'fotos' },
+    { url: 'dump.html', label: 'dump' },
     { url: 'changelog.html', label: 'changelog' }
   ]
 

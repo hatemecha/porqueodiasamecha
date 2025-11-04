@@ -1,0 +1,550 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" href="/favicon.ico" />
+        <title>dump • hatemecha</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+        <link rel="stylesheet" href="styles.css" />
+        <style>
+            body {
+                align-items: stretch;
+                justify-content: flex-start;
+                max-width: 614px;
+                margin: 0 auto;
+                padding: 0;
+                width: 100%;
+                overflow-y: auto;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+            }
+
+            body::-webkit-scrollbar {
+                display: none;
+            }
+
+            header {
+                position: sticky;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 1000;
+                background: var(--header-bg);
+                backdrop-filter: blur(6px);
+                border-bottom: 1px solid var(--border-color);
+                padding-top: 14px;
+                padding-bottom: 14px;
+                width: 100%;
+                margin: 0;
+                order: -1;
+            }
+
+            .header-title-wrapper {
+                grid-template-columns: auto 1fr auto;
+                gap: 12px;
+            }
+
+            header nav ul {
+                gap: 40px;
+            }
+
+            .page-title {
+                margin: 0;
+                padding: 20px 20px 10px 20px;
+                text-align: center;
+                letter-spacing: 0.02em;
+                font-family: "DrukWideBold", sans-serif;
+                font-size: 26px;
+            }
+
+            .posts {
+                display: flex;
+                flex-direction: column;
+                gap: 0;
+                width: 100%;
+                max-width: 100%;
+            }
+
+            .post {
+                background: var(--bg-secondary);
+                border: 1px solid var(--border-color);
+                border-top: none;
+                margin-bottom: 0;
+            }
+
+            .post:first-child {
+                border-top: 1px solid var(--border-color);
+            }
+
+            .post-header {
+                padding: 14px 16px;
+                border-bottom: 1px solid var(--border-color);
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+
+            .post-avatar {
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                background: var(--link-color);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-weight: bold;
+                font-size: 14px;
+                flex-shrink: 0;
+            }
+
+            .post-username {
+                font-weight: 600;
+                font-size: 14px;
+            }
+
+            .post-date {
+                margin-left: auto;
+                font-size: 12px;
+                opacity: 0.6;
+            }
+
+            .post-media {
+                position: relative;
+                width: 100%;
+                background: var(--bg-color);
+                overflow: hidden;
+                aspect-ratio: 1;
+            }
+
+            .carousel-container {
+                position: relative;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                overflow: hidden;
+            }
+
+            .carousel-track {
+                display: flex;
+                width: 100%;
+                height: 100%;
+                transition: transform 0.3s ease;
+            }
+
+            .carousel-slide {
+                min-width: 100%;
+                height: 100%;
+                position: relative;
+            }
+
+            .carousel-slide img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+                opacity: 0;
+                transition: opacity 300ms ease-out;
+            }
+
+            .carousel-slide img.loaded {
+                opacity: 1;
+            }
+
+            .carousel-slide::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(90deg, 
+                    var(--bg-secondary) 0%, 
+                    var(--bg-secondary) 40%,
+                    rgba(255,255,255,0.05) 50%,
+                    var(--bg-secondary) 60%,
+                    var(--bg-secondary) 100%);
+                background-size: 200% 100%;
+                animation: shimmer 1.5s infinite;
+                z-index: 1;
+                pointer-events: none;
+            }
+
+            .carousel-slide:has(img.loaded)::before {
+                display: none;
+            }
+
+            @keyframes shimmer {
+                0% { background-position: -200% 0; }
+                100% { background-position: 200% 0; }
+            }
+
+            .carousel-nav {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                background: rgba(0, 0, 0, 0.5);
+                border: none;
+                color: white;
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 16px;
+                z-index: 10;
+                transition: background 0.2s ease;
+                opacity: 0;
+                pointer-events: none;
+            }
+
+            .post-media:hover .carousel-nav {
+                opacity: 1;
+                pointer-events: all;
+            }
+
+            .carousel-nav:hover {
+                background: rgba(0, 0, 0, 0.7);
+            }
+
+            .carousel-nav.prev {
+                left: 12px;
+            }
+
+            .carousel-nav.next {
+                right: 12px;
+            }
+
+            .carousel-nav:disabled {
+                opacity: 0.3;
+                cursor: not-allowed;
+            }
+
+            .carousel-dots {
+                position: absolute;
+                bottom: 12px;
+                left: 50%;
+                transform: translateX(-50%);
+                display: flex;
+                gap: 6px;
+                z-index: 10;
+            }
+
+            .carousel-dot {
+                width: 6px;
+                height: 6px;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.5);
+                border: none;
+                cursor: pointer;
+                padding: 0;
+                transition: background 0.2s ease, transform 0.2s ease;
+            }
+
+            .carousel-dot.active {
+                background: white;
+                transform: scale(1.2);
+            }
+
+            .post-content {
+                padding: 12px 16px;
+            }
+
+            .post-description {
+                margin: 0 0 8px 0;
+                line-height: 1.5;
+                font-size: 14px;
+            }
+
+            .post-footer {
+                font-size: 12px;
+                opacity: 0.6;
+                font-style: italic;
+            }
+
+            @media (max-width: 768px) {
+                body {
+                    padding: 0;
+                    max-width: 100%;
+                }
+                header nav ul {
+                    gap: 30px;
+                    font-size: 14px;
+                }
+                .page-title {
+                    font-size: 24px;
+                    padding: 18px 15px 10px 15px;
+                }
+                .post-header {
+                    padding: 12px 14px;
+                }
+                .post-content {
+                    padding: 10px 14px;
+                }
+                .carousel-nav {
+                    width: 28px;
+                    height: 28px;
+                    font-size: 14px;
+                }
+                .carousel-nav.prev {
+                    left: 8px;
+                }
+                .carousel-nav.next {
+                    right: 8px;
+                }
+            }
+
+            @media (max-width: 480px) {
+                header nav ul {
+                    gap: 20px;
+                    font-size: 13px;
+                }
+                .page-title {
+                    font-size: 22px;
+                    padding: 16px 12px 8px 12px;
+                }
+                .post-header {
+                    padding: 10px 12px;
+                }
+                .post-content {
+                    padding: 8px 12px;
+                }
+                .post-description {
+                    font-size: 13px;
+                }
+                .post-footer {
+                    font-size: 11px;
+                }
+                .carousel-nav {
+                    width: 24px;
+                    height: 24px;
+                    font-size: 12px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <header></header>
+
+        <h2 class="page-title">dump</h2>
+
+        <div class="posts" id="posts"></div>
+
+        <footer></footer>
+        <script src="header.js"></script>
+        <script src="footer.js"></script>
+        <script>
+            // Ejemplo de estructura de posts:
+            // const postsData = [
+            //     {
+            //         date: '2025-01-15',
+            //         description: 'descripción del post',
+            //         images: [
+            //             'src/assets/images/dump/1/001.JPG',
+            //             'src/assets/images/dump/1/002.JPG'
+            //         ]
+            //     }
+            // ]
+
+            const postsData = []
+
+            function formatDate(iso) {
+                try {
+                    const date = new Date(iso)
+                    const day = date.getDate().toString().padStart(2, '0')
+                    const month = (date.getMonth() + 1).toString().padStart(2, '0')
+                    const year = date.getFullYear()
+                    return `${day}/${month}/${year}`
+                } catch (e) {
+                    return iso
+                }
+            }
+
+            function createCarousel(images, postId) {
+                if (images.length === 0) return null
+
+                const container = document.createElement('div')
+                container.className = 'carousel-container'
+                container.setAttribute('data-post-id', postId)
+
+                const track = document.createElement('div')
+                track.className = 'carousel-track'
+                track.style.width = `${images.length * 100}%`
+
+                images.forEach((src, index) => {
+                    const slide = document.createElement('div')
+                    slide.className = 'carousel-slide'
+
+                    const img = document.createElement('img')
+                    img.src = src
+                    img.alt = `Imagen ${index + 1}`
+                    img.loading = index === 0 ? 'eager' : 'lazy'
+                    img.decoding = 'async'
+
+                    img.addEventListener('load', function() {
+                        this.classList.add('loaded')
+                    }, { once: true })
+
+                    img.addEventListener('error', function() {
+                        this.classList.add('loaded')
+                    }, { once: true })
+
+                    slide.appendChild(img)
+                    track.appendChild(slide)
+                })
+
+                container.appendChild(track)
+
+                if (images.length > 1) {
+                    const prevBtn = document.createElement('button')
+                    prevBtn.className = 'carousel-nav prev'
+                    prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>'
+                    prevBtn.setAttribute('aria-label', 'Imagen anterior')
+                    prevBtn.addEventListener('click', () => navigateCarousel(postId, -1))
+
+                    const nextBtn = document.createElement('button')
+                    nextBtn.className = 'carousel-nav next'
+                    nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>'
+                    nextBtn.setAttribute('aria-label', 'Siguiente imagen')
+                    nextBtn.addEventListener('click', () => navigateCarousel(postId, 1))
+
+                    container.appendChild(prevBtn)
+                    container.appendChild(nextBtn)
+
+                    const dots = document.createElement('div')
+                    dots.className = 'carousel-dots'
+                    images.forEach((_, index) => {
+                        const dot = document.createElement('button')
+                        dot.className = 'carousel-dot'
+                        if (index === 0) dot.classList.add('active')
+                        dot.setAttribute('aria-label', `Ir a imagen ${index + 1}`)
+                        dot.addEventListener('click', () => goToSlide(postId, index))
+                        dots.appendChild(dot)
+                    })
+                    container.appendChild(dots)
+                }
+
+                return container
+            }
+
+            const carouselStates = {}
+
+            function navigateCarousel(postId, direction) {
+                if (!carouselStates[postId]) {
+                    carouselStates[postId] = { currentIndex: 0 }
+                }
+
+                const state = carouselStates[postId]
+                const container = document.querySelector(`[data-post-id="${postId}"]`)
+                if (!container) return
+
+                const track = container.querySelector('.carousel-track')
+                const slides = container.querySelectorAll('.carousel-slide')
+                const dots = container.querySelectorAll('.carousel-dot')
+
+                state.currentIndex += direction
+
+                if (state.currentIndex < 0) {
+                    state.currentIndex = slides.length - 1
+                } else if (state.currentIndex >= slides.length) {
+                    state.currentIndex = 0
+                }
+
+                updateCarousel(container, state.currentIndex, slides, dots)
+            }
+
+            function goToSlide(postId, index) {
+                if (!carouselStates[postId]) {
+                    carouselStates[postId] = { currentIndex: 0 }
+                }
+
+                const state = carouselStates[postId]
+                const container = document.querySelector(`[data-post-id="${postId}"]`)
+                if (!container) return
+
+                const track = container.querySelector('.carousel-track')
+                const slides = container.querySelectorAll('.carousel-slide')
+                const dots = container.querySelectorAll('.carousel-dot')
+
+                state.currentIndex = index
+                updateCarousel(container, state.currentIndex, slides, dots)
+            }
+
+            function updateCarousel(container, index, slides, dots) {
+                const track = container.querySelector('.carousel-track')
+                track.style.transform = `translateX(-${index * (100 / slides.length)}%)`
+
+                dots.forEach((dot, i) => {
+                    if (i === index) {
+                        dot.classList.add('active')
+                    } else {
+                        dot.classList.remove('active')
+                    }
+                })
+
+                const prevBtn = container.querySelector('.prev')
+                const nextBtn = container.querySelector('.next')
+                if (prevBtn) prevBtn.disabled = false
+                if (nextBtn) nextBtn.disabled = false
+            }
+
+            function createPost(post, index) {
+                const postEl = document.createElement('div')
+                postEl.className = 'post'
+
+                const header = document.createElement('div')
+                header.className = 'post-header'
+
+                const avatar = document.createElement('div')
+                avatar.className = 'post-avatar'
+                avatar.textContent = 'h'
+
+                const username = document.createElement('div')
+                username.className = 'post-username'
+                username.textContent = 'hatemecha'
+
+                const date = document.createElement('div')
+                date.className = 'post-date'
+                date.textContent = formatDate(post.date)
+
+                header.appendChild(avatar)
+                header.appendChild(username)
+                header.appendChild(date)
+
+                const media = document.createElement('div')
+                media.className = 'post-media'
+                const carousel = createCarousel(post.images, `post-${index}`)
+                if (carousel) {
+                    media.appendChild(carousel)
+                }
+
+                const content = document.createElement('div')
+                content.className = 'post-content'
+
+                const description = document.createElement('p')
+                description.className = 'post-description'
+                description.textContent = post.description
+
+                const footer = document.createElement('div')
+                footer.className = 'post-footer'
+                footer.textContent = formatDate(post.date)
+
+                content.appendChild(description)
+                content.appendChild(footer)
+
+                postEl.appendChild(header)
+                postEl.appendChild(media)
+                postEl.appendChild(content)
+
+                return postEl
+            }
+
+            // Descomentar para renderizar posts:
+            // const postsEl = document.getElementById('posts')
+            // postsData.forEach((post, index) => {
+            //     postsEl.appendChild(createPost(post, index))
+            // })
+        </script>
+    </body>
+</html>
+
