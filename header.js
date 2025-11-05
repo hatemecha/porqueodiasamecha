@@ -5,8 +5,8 @@
   // Aplicar tema inmediatamente al cargar
   const savedTheme = localStorage.getItem('theme') || 'light'
   const html = document.documentElement
-  const darkThemes = ['gruvbox', 'borland', 'doom-one', 'tokyo-night']
-  if (darkThemes.includes(savedTheme)) {
+  const darkThemeIds = themes.filter(t => t.id !== 'light').map(t => t.id)
+  if (darkThemeIds.includes(savedTheme)) {
     html.setAttribute('data-theme', savedTheme)
   } else {
     html.removeAttribute('data-theme')
@@ -24,28 +24,6 @@
     { url: 'changelog.html', label: 'changelog' }
   ]
 
-  const themes = [
-    { 
-      id: 'light', 
-      colors: ['#fafaf9', '#ff6c6b', '#000000', '#f1f1ef'] 
-    },
-    { 
-      id: 'gruvbox', 
-      colors: ['#282828', '#d79921', '#98971a', '#fb4934'] 
-    },
-    { 
-      id: 'borland', 
-      colors: ['#000080', '#ff6c60', '#ffffff', '#000070'] 
-    },
-    { 
-      id: 'doom-one', 
-      colors: ['#282c34', '#ff6c6b', '#51afef', '#bbc2cf'] 
-    },
-    { 
-      id: 'tokyo-night', 
-      colors: ['#1a1b26', '#f7768e', '#7aa2f7', '#c0caf5'] 
-    }
-  ]
 
   const renderHeader = () => {
     const header = document.querySelector('header')
@@ -96,10 +74,9 @@
     if (selector) {
       const currentIndex = getCurrentThemeIndex()
       const currentTheme = themes[currentIndex]
+      const secondaryColor = currentTheme.colors[1]
       
-      selector.innerHTML = currentTheme.colors.map(color => 
-        `<div class="color-swatch" style="background-color: ${color}"></div>`
-      ).join('')
+      selector.innerHTML = `<div class="color-swatch" style="background-color: ${secondaryColor}"></div>`
     }
   }
 
@@ -124,18 +101,18 @@
     }
   }
 
-  function applyTheme(theme) {
+  function applyTheme(themeId) {
     const html = document.documentElement
-    const darkThemes = ['gruvbox', 'borland', 'doom-one', 'tokyo-night']
+    const darkThemeIds = themes.filter(t => t.id !== 'light').map(t => t.id)
     
-    if (darkThemes.includes(theme)) {
-      html.setAttribute('data-theme', theme)
+    if (darkThemeIds.includes(themeId)) {
+      html.setAttribute('data-theme', themeId)
     } else {
       html.removeAttribute('data-theme')
     }
 
     requestAnimationFrame(() => {
-      const event = new CustomEvent('themechange', { detail: { theme } })
+      const event = new CustomEvent('themechange', { detail: { theme: themeId } })
       window.dispatchEvent(event)
     })
   }
