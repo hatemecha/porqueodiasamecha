@@ -7,162 +7,15 @@
         <title>fotos • hatemecha</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
         <link rel="stylesheet" href="styles.css" />
+        <link rel="stylesheet" href="src/css/components/shared.css" />
+        <link rel="stylesheet" href="src/css/components/lightbox.css" />
+        <link rel="stylesheet" href="src/css/pages/fotos.css" />
         <style>
-            body {
-                align-items: stretch;
-                justify-content: flex-start;
-                max-width: 1100px;
-                margin: 0 auto;
-                padding: 0;
-                width: 100%;
-                overflow-y: auto;
-                scrollbar-width: none;
-                -ms-overflow-style: none;
-            }
-
-            body::-webkit-scrollbar {
-                display: none;
-            }
-
             header {
-                position: sticky;
-                top: 0;
-                left: 0;
-                right: 0;
                 z-index: 9999;
                 background: var(--header-bg) !important;
-                backdrop-filter: blur(6px);
-                border-bottom: 1px solid var(--border-color);
-                padding-top: 14px;
-                padding-bottom: 14px;
-                width: 100%;
-                margin: 0;
-                order: -1;
                 transform: translateZ(0);
                 isolation: isolate;
-            }
-
-            .header-title-wrapper {
-                grid-template-columns: auto 1fr auto;
-                gap: 12px;
-            }
-
-            header nav ul {
-                gap: 40px;
-            }
-
-            .page {
-                width: 100%;
-                max-width: 100%;
-                margin: 0 auto;
-                padding: 0;
-                position: relative;
-                z-index: 1;
-            }
-
-            .page-title {
-                margin: 0;
-                padding: 20px 20px 10px 20px;
-            }
-
-            .gallery {
-                column-width: 260px;
-                column-gap: 14px;
-                width: 100%;
-                max-width: 100%;
-                position: relative;
-                z-index: 1;
-                margin-top: 0;
-            }
-
-            .gallery-item {
-                position: relative;
-                margin: 0 0 14px 0;
-                break-inside: avoid;
-                background: var(--bg-secondary);
-                border: 1px solid var(--border-color);
-                min-height: 100px;
-                z-index: 1;
-            }
-
-            .gallery-item img {
-                width: 100%;
-                height: auto;
-                display: block;
-                transition: transform 160ms ease-out, opacity 300ms ease-out;
-                opacity: 0;
-            }
-
-            .gallery-item img.loaded {
-                opacity: 1;
-            }
-
-            .gallery-item::before {
-                content: '';
-                position: absolute;
-                inset: 0;
-                background: linear-gradient(90deg, 
-                    var(--bg-secondary) 0%, 
-                    var(--bg-secondary) 40%,
-                    rgba(255,255,255,0.05) 50%,
-                    var(--bg-secondary) 60%,
-                    var(--bg-secondary) 100%);
-                background-size: 200% 100%;
-                animation: shimmer 1.5s infinite;
-                z-index: 1;
-                pointer-events: none;
-            }
-
-            .gallery-item:has(img.loaded)::before {
-                display: none;
-            }
-
-            @keyframes shimmer {
-                0% { background-position: -200% 0; }
-                100% { background-position: 200% 0; }
-            }
-
-            .gallery-item:hover img {
-                transform: scale(1.01);
-            }
-
-            .gallery-item a {
-                position: absolute;
-                inset: 0;
-            }
-
-            @media (max-width: 768px) {
-                body {
-                    padding: 0;
-                }
-                .page {
-                    padding: 0 10px;
-                }
-                header nav ul {
-                    gap: 30px;
-                    font-size: 14px;
-                }
-                .page {
-                    padding: 0 10px;
-                    max-width: 100%;
-                }
-                .gallery {
-                    column-width: 180px;
-                    column-gap: 10px;
-                    max-width: 100%;
-                }
-            }
-
-            @media (max-width: 480px) {
-                header nav ul {
-                    gap: 20px;
-                    font-size: 13px;
-                }
-                .gallery {
-                    column-width: 150px;
-                    column-gap: 8px;
-                    max-width: 100%;
-                }
             }
         </style>
     </head>
@@ -173,52 +26,29 @@
             <div class="page-title">fotos</div>
 
             <div id="gallery" class="gallery"></div>
-            <div id="lightbox" aria-hidden="true" role="dialog" style="display:none;">
-                <button class="close" aria-label="Cerrar" style="position:absolute;top:12px;right:16px;background:transparent;border:none;color:#ffffff;font-size:32px;line-height:1;cursor:pointer;">×</button>
+            <div id="lightbox" aria-hidden="true" role="dialog">
+                <button class="close" aria-label="Cerrar">×</button>
                 <img alt="vista ampliada" />
             </div>
         </div>
 
-        <script>
-            const imageFilenames = [
-                '110.JPG',
-                '087.JPG',
-                '083.JPG',
-                '081.JPG',
-                '078.JPG',
-                '076.JPG',
-                '047.JPG',
-                '037.JPG',
-                '036.JPG',
-                '023.JPG',
-                '022.JPG',
-                '021.JPG',
-                '019.JPG',
-                '006.JPG',
-                '004.JPG'
-            ]
+        <script type="module">
+            import { createImageLoader } from './src/js/utils/imageLoader.js'
+            import { initLightbox } from './src/js/components/lightbox.js'
+            import { fotosImages, fotosBasePath } from './src/js/data/images.js'
 
-            const basePath = 'src/assets/images/fotos/'
             const galleryEl = document.getElementById('gallery')
+            const loadImage = createImageLoader({ eagerCount: 3 })
 
             function createItem(src, alt, index) {
                 const item = document.createElement('div')
                 item.className = 'gallery-item'
 
                 const img = document.createElement('img')
-                img.loading = index < 3 ? 'eager' : 'lazy'
-                img.decoding = 'async'
-                img.fetchPriority = index < 2 ? 'high' : 'auto'
                 img.src = src
                 img.alt = alt
 
-                img.addEventListener('load', function() {
-                    this.classList.add('loaded')
-                }, { once: true })
-
-                img.addEventListener('error', function() {
-                    this.classList.add('loaded')
-                }, { once: true })
+                loadImage(img, index)
 
                 const link = document.createElement('a')
                 link.href = src
@@ -230,68 +60,13 @@
                 return item
             }
 
-            imageFilenames.forEach((name, index) => {
-                const src = basePath + name
+            fotosImages.forEach((name, index) => {
+                const src = fotosBasePath + name
                 const alt = name.replace(/\.JPG$/i, '')
                 galleryEl.appendChild(createItem(src, alt, index))
             })
 
-            // Lightbox similar a schizoposting.html
-            ;(() => {
-                const lightbox = document.getElementById('lightbox')
-                const closeBtn = lightbox.querySelector('.close')
-                const lightboxImg = lightbox.querySelector('img')
-
-                // estilos inline mínimos para no tocar styles.css
-                Object.assign(lightbox.style, {
-                    position: 'fixed',
-                    inset: '0',
-                    background: 'rgba(0,0,0,0.9)',
-                    display: 'none',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    zIndex: '1000'
-                })
-                Object.assign(lightboxImg.style, {
-                    maxWidth: '95vw',
-                    maxHeight: '95vh',
-                    objectFit: 'contain',
-                    boxShadow: '0 8px 40px rgba(0,0,0,0.6)'
-                })
-
-                const open = src => {
-                    lightboxImg.src = src
-                    lightbox.style.display = 'flex'
-                    lightbox.setAttribute('aria-hidden', 'false')
-                    document.body.style.overflow = 'hidden'
-                }
-                const close = () => {
-                    lightbox.style.display = 'none'
-                    lightbox.setAttribute('aria-hidden', 'true')
-                    lightboxImg.src = ''
-                    document.body.style.overflow = ''
-                }
-
-                galleryEl.addEventListener('click', e => {
-                    const target = e.target
-                    if (target && target.tagName === 'IMG') {
-                        e.preventDefault()
-                        open(target.currentSrc || target.src)
-                    }
-                    if (target && target.tagName === 'A') {
-                        e.preventDefault()
-                        open(target.href)
-                    }
-                })
-
-                lightbox.addEventListener('click', e => {
-                    if (e.target === lightbox) close()
-                })
-                closeBtn.addEventListener('click', close)
-                window.addEventListener('keydown', e => {
-                    if (e.key === 'Escape') close()
-                })
-            })()
+            initLightbox({ selector: '.gallery-item img' })
         </script>
         <footer></footer>
         <script src="header.js"></script>

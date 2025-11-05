@@ -1,0 +1,139 @@
+.posts {
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+  padding: 0 20px 60px 20px;
+  width: 100%;
+  max-width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.post {
+  display: flex;
+  align-items: flex-start;
+  gap: 60px;
+}
+
+.post:nth-child(even) {
+  flex-direction: row-reverse;
+}
+
+.post-media {
+  flex: 0 1 50%;
+  min-width: 0;
+  max-width: 50%;
+  position: relative;
+  background: #000;
+  overflow: hidden;
+  aspect-ratio: 1;
+}
+
+.post-info {
+  flex: 0 1 50%;
+  min-width: 0;
+  max-width: 50%;
+}
+
+.post-info h2 {
+  margin: 0 0 10px 0;
+  font-size: 28px;
+}
+
+.post-info p {
+  margin: 0;
+  line-height: 1.7;
+  opacity: 0.9;
+}
+
+.post-info .date {
+  margin-top: 6px;
+  opacity: 0.6;
+  font-style: italic;
+  line-height: 1.6;
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 1024px) {
+  body {
+    max-width: 100%;
+    padding: 0;
+    width: 100%;
+  }
+  .posts {
+    gap: 60px;
+    padding: 25px 20px 50px 20px;
+    max-width: 100%;
+  }
+  .post {
+    gap: 40px;
+  }
+}
+
+@media (max-width: 900px) {
+  .post,
+  .post:nth-child(even) {
+    flex-direction: column;
+    gap: 24px;
+  }
+  .post-media {
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 100%;
+  }
+  .post-info {
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 100%;
+  }
+  .posts {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .posts {
+    gap: 45px;
+    padding: 18px 15px 35px 15px;
+    max-width: 100%;
+  }
+  .post {
+    gap: 18px;
+  }
+  .post-info h2 {
+    font-size: 22px;
+  }
+  .post-info p {
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .post-info .date {
+    font-size: 13px;
+    margin-top: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .posts {
+    gap: 35px;
+    padding: 15px 10px 30px 10px;
+    max-width: 100%;
+  }
+  .post {
+    gap: 16px;
+  }
+  .post-info h2 {
+    font-size: 19px;
+    margin-bottom: 8px;
+  }
+  .post-info p {
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .post-info .date {
+    font-size: 12px;
+    margin-top: 6px;
+  }
+}
+

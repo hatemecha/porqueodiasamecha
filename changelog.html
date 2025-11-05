@@ -7,130 +7,8 @@
         <title>changelog • hatemecha</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
         <link rel="stylesheet" href="styles.css" />
-        <style>
-            body {
-                display: flex;
-                align-items: stretch;
-                justify-content: flex-start;
-                max-width: 1100px;
-                margin: 0 auto;
-                width: 100%;
-                overflow-y: auto;
-                scrollbar-width: none;
-                -ms-overflow-style: none;
-            }
-
-            body::-webkit-scrollbar {
-                display: none;
-            }
-
-            header {
-                position: sticky;
-                top: 0;
-                left: 0;
-                right: 0;
-                z-index: 1000;
-                background: var(--header-bg);
-                backdrop-filter: blur(6px);
-                border-bottom: 1px solid var(--border-color);
-                padding-top: 14px;
-                padding-bottom: 14px;
-                width: 100%;
-                margin: 0;
-                order: -1;
-            }
-
-            .header-title-wrapper {
-                grid-template-columns: auto 1fr auto;
-                gap: 12px;
-            }
-
-            header nav ul {
-                gap: 40px;
-            }
-
-            .page {
-                width: 100%;
-                padding: 30px 20px 60px 20px;
-                max-width: 100%;
-            }
-
-            .page-title {
-                margin: 10px 0 30px 0;
-                text-align: center;
-                letter-spacing: 0.02em;
-                font-family: "DrukWideBold", sans-serif;
-                font-size: 26px;
-            }
-
-            .changelog {
-                display: flex;
-                flex-direction: column;
-                gap: 32px;
-            }
-
-            .date-entry {
-                background: var(--bg-secondary);
-                border: 1px solid var(--border-color);
-                padding: 20px;
-            }
-
-            .date-header {
-                font-family: "DrukWideBold", sans-serif;
-                font-size: 18px;
-                color: var(--link-color);
-                margin-bottom: 16px;
-            }
-
-            .date-changes {
-                display: flex;
-                flex-direction: column;
-                gap: 8px;
-            }
-
-            .change-item {
-                padding-left: 16px;
-                position: relative;
-                line-height: 1.5;
-            }
-
-            .change-item::before {
-                content: '•';
-                position: absolute;
-                left: 0;
-                color: var(--link-color);
-            }
-
-            @media (max-width: 768px) {
-                body {
-                    padding: 15px;
-                }
-                header nav ul {
-                    gap: 30px;
-                    font-size: 14px;
-                }
-                .page {
-                    padding: 20px 15px 40px 15px;
-                    max-width: 100%;
-                }
-                .date-entry {
-                    padding: 16px;
-                }
-            }
-
-            @media (max-width: 480px) {
-                header nav ul {
-                    gap: 20px;
-                    font-size: 13px;
-                }
-                .page-title {
-                    font-size: 22px;
-                }
-                .date-header {
-                    font-size: 16px;
-                }
-            }
-        </style>
+        <link rel="stylesheet" href="src/css/components/shared.css" />
+        <link rel="stylesheet" href="src/css/pages/changelog.css" />
     </head>
     <body>
         <header></header>
@@ -144,39 +22,11 @@
         <footer></footer>
         <script src="header.js"></script>
         <script src="footer.js"></script>
-        <script>
-            const changelogData = [
-                {
-                    date: '2025-11-04',
-                    changes: [
-                        'Release 1.1.0',
-                        'Nueva página dump.html'
-                    ]
-                },
-                {
-                    date: '2025-11-03',
-                    changes: [
-                        'Release 1.0.0'
-                    ]
-                }
-            ]
+        <script type="module">
+            import { formatDate } from './src/js/utils/dateFormatter.js'
+            import { changelogData } from './src/js/data/changelog.js'
 
             const changelogEl = document.getElementById('changelog')
-
-            function formatDate(iso) {
-                try {
-                    const parts = iso.split('-')
-                    if (parts.length === 3) {
-                        const year = parts[0]
-                        const month = parts[1]
-                        const day = parts[2]
-                        return `${day} - ${month} - ${year}`
-                    }
-                    return iso
-                } catch (e) {
-                    return iso
-                }
-            }
 
             function groupByDate(data) {
                 const grouped = {}
