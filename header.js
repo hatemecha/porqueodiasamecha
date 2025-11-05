@@ -40,7 +40,10 @@
           </a>
         </div>
         <h1><a href="index.html">hatemecha</a></h1>
-        <div class="theme-selector" id="theme-selector" aria-label="Cambiar tema"></div>
+        <div class="header-controls">
+          <div class="model-selector" id="model-selector" aria-label="Cambiar modelo 3D"></div>
+          <div class="theme-selector" id="theme-selector" aria-label="Cambiar tema"></div>
+        </div>
       </div>
       <nav>
         <ul>
@@ -69,15 +72,30 @@
     return index >= 0 ? index : 0
   }
 
+  function updateModelSelector() {
+    const modelSelector = document.getElementById('model-selector')
+    if (!modelSelector) return
+    
+    const currentIndex = getCurrentThemeIndex()
+    const currentTheme = themes[currentIndex]
+    const secondaryColor = currentTheme.colors[1]
+    
+    // Icono genérico de modelo 3D
+    modelSelector.innerHTML = `<i class="fa-solid fa-cube" style="color: ${secondaryColor}"></i>`
+  }
+
   function updateThemeSelectorColors() {
-    const selector = document.getElementById('theme-selector')
-    if (selector) {
+    const themeSelector = document.getElementById('theme-selector')
+    
+    if (themeSelector) {
       const currentIndex = getCurrentThemeIndex()
       const currentTheme = themes[currentIndex]
       const secondaryColor = currentTheme.colors[1]
       
-      selector.innerHTML = `<div class="color-swatch" style="background-color: ${secondaryColor}"></div>`
+      themeSelector.innerHTML = `<div class="color-swatch" style="background-color: ${secondaryColor}"></div>`
     }
+    
+    updateModelSelector()
   }
 
   function cycleTheme() {
@@ -99,6 +117,21 @@
     if (themeSelector) {
       themeSelector.addEventListener('click', cycleTheme)
     }
+
+    const modelSelector = document.getElementById('model-selector')
+    if (modelSelector) {
+      modelSelector.addEventListener('click', () => {
+        if (window.changeModel) {
+          window.changeModel()
+        }
+      })
+    }
+
+    // Escuchar cambios de modelo
+    window.addEventListener('modelchange', updateModelSelector)
+    
+    // Actualizar cuando cambie el tema también
+    window.addEventListener('themechange', updateModelSelector)
   }
 
   function applyTheme(themeId) {

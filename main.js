@@ -200,7 +200,7 @@ function fixMaterials(object) {
     })
 }
 
-// Lista de modelos disponibles (se puede extender agregando más rutas)
+// Lista de modelos disponibles
 const availableModels = [
     './models/canon_at-1_retro_camera/scene.gltf',
     './models/lenovo_thinkpad_l410_open/scene.gltf',
@@ -210,12 +210,35 @@ const availableModels = [
 // Variable para almacenar el modelo actual
 let currentModel = null
 let isUserInteracting = false
+let currentModelIndex = 0
+
+// Función para notificar cambio de modelo
+function notifyModelChange() {
+    const event = new CustomEvent('modelchange', { 
+        detail: { 
+            index: currentModelIndex
+        } 
+    })
+    window.dispatchEvent(event)
+}
 
 // Seleccionar un modelo aleatorio
 function getRandomModel() {
     const randomIndex = Math.floor(Math.random() * availableModels.length)
+    currentModelIndex = randomIndex
     return availableModels[randomIndex]
 }
+
+// Función para cambiar al siguiente modelo
+function changeToNextModel() {
+    currentModelIndex = (currentModelIndex + 1) % availableModels.length
+    loadModel(availableModels[currentModelIndex])
+    notifyModelChange()
+}
+
+// Exportar funciones para uso externo
+window.changeModel = changeToNextModel
+window.getCurrentModelIndex = () => currentModelIndex
 
 // Función para cargar un modelo
 function loadModel(modelPath) {
@@ -276,6 +299,10 @@ function loadModel(modelPath) {
 
 // Cargar un modelo aleatorio al iniciar
 loadModel(getRandomModel())
+// Notificar el modelo inicial después de un pequeño delay para asegurar que el header esté listo
+setTimeout(() => {
+    notifyModelChange()
+}, 100)
 
 // Variables para la animación automática
 const rotationSpeedX = 0.2
