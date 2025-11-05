@@ -127,17 +127,16 @@
   function applyTheme(theme) {
     const html = document.documentElement
     const darkThemes = ['gruvbox', 'borland', 'doom-one', 'tokyo-night']
+    
     if (darkThemes.includes(theme)) {
       html.setAttribute('data-theme', theme)
     } else {
       html.removeAttribute('data-theme')
     }
-    
+
     requestAnimationFrame(() => {
-      setTimeout(() => {
-        const event = new CustomEvent('themechange', { detail: { theme } })
-        window.dispatchEvent(event)
-      }, 50)
+      const event = new CustomEvent('themechange', { detail: { theme } })
+      window.dispatchEvent(event)
     })
   }
 })()

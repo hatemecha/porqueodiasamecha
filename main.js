@@ -29,18 +29,14 @@ function hexToRgb(hex) {
   } : null
 }
 
+const defaultColor = 0xfafaf9
+let lastBgColor = null
+
 function getBgColor() {
-  const bgColorVar = getComputedStyle(document.documentElement).getPropertyValue('--bg-color').trim()
-  
-  if (bgColorVar && bgColorVar.startsWith('#')) {
-    const rgb = hexToRgb(bgColorVar)
-    if (rgb) {
-      return (rgb.r << 16) | (rgb.g << 8) | rgb.b
-    }
-  }
-  
-  const bgColor = getComputedStyle(document.body).getPropertyValue('background-color')
-  if (bgColor && bgColor !== 'rgba(0, 0, 0, 0)') {
+  const bodyStyle = getComputedStyle(document.body)
+  const bgColor = bodyStyle.getPropertyValue('background-color')
+
+  if (bgColor && bgColor !== 'rgba(0, 0, 0, 0)' && bgColor !== 'transparent') {
     const rgbMatch = bgColor.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*[\d.]+)?\)/)
     if (rgbMatch) {
       const r = parseInt(rgbMatch[1])
@@ -49,22 +45,29 @@ function getBgColor() {
       return (r << 16) | (g << 8) | b
     }
   }
-  
-  // Color por defecto del tema light
-  return 0xfafaf9
-}
 
-let lastBgColor = null
+  const rootStyle = getComputedStyle(document.documentElement)
+  const bgColorVar = rootStyle.getPropertyValue('--bg-color').trim()
+
+  if (bgColorVar && bgColorVar.startsWith('#')) {
+    const rgb = hexToRgb(bgColorVar)
+    if (rgb) {
+      return (rgb.r << 16) | (rgb.g << 8) | rgb.b
+    }
+  }
+
+  return defaultColor
+}
 
 function updateRendererColor(force = false) {
   const currentColor = getBgColor()
-  
+
   if (!force && currentColor === lastBgColor) {
     return
   }
-  
-  lastBgColor = currentColor
+
   renderer.setClearColor(currentColor, 1)
+  lastBgColor = currentColor
 }
 
 // Crear renderer
@@ -77,7 +80,6 @@ renderer.shadowMap.enabled = false
 
 // Establecer color inicial inmediatamente (color por defecto del tema light)
 // Esto evita el flash negro al cargar la página
-const defaultColor = 0xfafaf9
 renderer.setClearColor(defaultColor, 1)
 lastBgColor = defaultColor
 
@@ -103,52 +105,10 @@ if (document.readyState === 'loading') {
   })
 }
 
-window.addEventListener('themechange', (e) => {
-  setTimeout(() => {
-    requestAnimationFrame(() => {
-      updateRendererColor(true)
-    })
-  }, 250)
-  
-  setTimeout(() => {
-    requestAnimationFrame(() => {
-      updateRendererColor(true)
-    })
-  }, 400)
-})
-
-// Observer para cambios en el atributo data-theme (backup)
-const observer = new MutationObserver(() => {
-  setTimeout(() => {
-    requestAnimationFrame(() => {
-      updateRendererColor(true)
-    })
-  }, 250)
-})
-
-observer.observe(document.documentElement, {
-  attributes: true,
-  attributeFilter: ['data-theme']
-})
-
-// Aplicar color inicial después de que el tema se haya cargado completamente
-function initRendererColor() {
-  setTimeout(() => {
-    requestAnimationFrame(() => {
-      updateRendererColor(true)
-    })
-  }, 100)
-}
-
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => {
-    updateRendererColor(true)
-    setTimeout(initRendererColor, 50)
-  })
-} else {
+window.addEventListener('themechange', () => {
+  lastBgColor = null
   updateRendererColor(true)
-  initRendererColor()
-}
+})
 
 // Ajustar tamaño cuando cambie la ventana
 window.addEventListener('resize', () => {
@@ -324,6 +284,7 @@ const rotationSpeedY = 0.3
 // Animación
 function animate() {
     requestAnimationFrame(animate)
+    updateRendererColor()
     
     // Rotación automática solo si el usuario no está interactuando
     if (currentModel && !isUserInteracting) {
