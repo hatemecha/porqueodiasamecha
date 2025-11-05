@@ -50,6 +50,39 @@
   color: var(--link-color);
 }
 
+.change-section {
+  margin-top: 12px;
+}
+
+.change-section-title {
+  font-weight: 600;
+  color: var(--link-color);
+  margin-bottom: 8px;
+  font-size: 15px;
+}
+
+.change-section-list {
+  margin: 0;
+  padding-left: 20px;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.change-section-list li {
+  padding-left: 16px;
+  position: relative;
+  line-height: 1.5;
+}
+
+.change-section-list li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--link-color);
+}
+
 @media (max-width: 768px) {
   body {
     padding: 15px;

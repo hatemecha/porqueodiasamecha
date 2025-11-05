@@ -40,6 +40,23 @@
                 return grouped
             }
 
+            function renderChange(change) {
+                // Si es un objeto con sección (type e items)
+                if (typeof change === 'object' && change.type && change.items) {
+                    const sectionTitle = change.type.charAt(0).toUpperCase() + change.type.slice(1) + ':'
+                    return `
+                        <div class="change-section">
+                            <div class="change-section-title">${sectionTitle}</div>
+                            <ul class="change-section-list">
+                                ${change.items.map(item => `<li>${item}</li>`).join('')}
+                            </ul>
+                        </div>
+                    `
+                }
+                // Si es un string simple
+                return `<div class="change-item">${change}</div>`
+            }
+
             function renderChangelog() {
                 const grouped = groupByDate(changelogData)
                 const sortedDates = Object.keys(grouped).sort((a, b) => new Date(b) - new Date(a))
@@ -48,9 +65,7 @@
                     <div class="date-entry">
                         <div class="date-header">${formatDate(date)}</div>
                         <div class="date-changes">
-                            ${grouped[date].map(change => `
-                                <div class="change-item">${change}</div>
-                            `).join('')}
+                            ${grouped[date].map(change => renderChange(change)).join('')}
                         </div>
                     </div>
                 `).join('')
