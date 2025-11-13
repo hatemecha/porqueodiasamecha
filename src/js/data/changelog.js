@@ -16,6 +16,13 @@ export const changelogData = [
         items: [
           'Mejoras en rendimiento de carga de páginas'
         ]
+      },
+      {
+        type: 'bugfix',
+        items: [
+          'Corregido centrado del footer en todas las páginas',
+          'Corregido header y temas en páginas de proyectos'
+        ]
       }
     ]
   },

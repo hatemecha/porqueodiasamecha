@@ -377,8 +377,10 @@ header.sticky {
 footer {
     margin-top: 20px;
     padding-top: 0;
-    width: fit-content;
+    width: 100%;
     max-width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .footer-content {
