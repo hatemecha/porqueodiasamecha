@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" href="/favicon.ico" />
+        <title>fastext — hatemecha</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        />
+        <link rel="stylesheet" href="../styles.css" />
+        <style>
+            body {
+                display: flex;
+                flex-direction: column;
+                align-items: stretch;
+                justify-content: flex-start;
+                max-width: 900px;
+                margin: 0 auto;
+                padding: 0;
+                width: 100%;
+                overflow-y: auto;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+            }
+
+            body::-webkit-scrollbar {
+                display: none;
+            }
+
+            header {
+                position: sticky;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 1000;
+                background: var(--header-bg);
+                backdrop-filter: blur(6px);
+                border-bottom: 1px solid var(--border-color);
+                padding-top: 14px;
+                padding-bottom: 14px;
+                width: 100%;
+                margin: 0;
+                order: -1;
+            }
+
+            .header-title-wrapper {
+                grid-template-columns: auto 1fr auto;
+                gap: 12px;
+            }
+
+            header nav ul {
+                gap: 40px;
+            }
+
+            .project-container {
+                padding: 30px 20px 60px 20px;
+                width: 100%;
+                max-width: 100%;
+            }
+
+            .project-header {
+                margin-bottom: 30px;
+            }
+
+            .project-title-wrapper {
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                margin-bottom: 12px;
+            }
+
+            .project-icon-large {
+                width: 80px;
+                height: 80px;
+                object-fit: contain;
+                border-radius: 8px;
+            }
+
+            .project-title {
+                margin: 0;
+                font-family: "DrukWideBold", sans-serif;
+                font-size: 32px;
+                letter-spacing: 0.02em;
+            }
+
+            .project-screenshot {
+                width: 100%;
+                max-width: 100%;
+                height: auto;
+                border-radius: 8px;
+                margin: 20px 0;
+                border: 1px solid var(--border-color);
+            }
+
+            .project-links {
+                display: flex;
+                gap: 20px;
+                flex-wrap: wrap;
+                margin-top: 20px;
+            }
+
+            .project-link {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                padding: 10px 16px;
+                border: 1px solid var(--border-color);
+                background: var(--bg-secondary);
+                color: var(--link-color);
+                text-decoration: none;
+                transition:
+                    transform 0.2s ease,
+                    border-color 0.2s ease,
+                    background 0.2s ease;
+                font-size: 14px;
+            }
+
+            .project-link:hover {
+                transform: translateY(-2px);
+                border-color: var(--link-color);
+                background: var(--bg-color);
+            }
+
+            .project-content {
+                background: var(--bg-secondary);
+                border: 1px solid var(--border-color);
+                padding: 24px;
+                line-height: 1.7;
+            }
+
+            .project-content h2 {
+                margin-top: 0;
+                margin-bottom: 16px;
+                font-family: "DrukWideBold", sans-serif;
+                font-size: 22px;
+            }
+
+            .project-content p {
+                margin: 0 0 16px 0;
+                opacity: 0.9;
+            }
+
+            .project-content p:last-child {
+                margin-bottom: 0;
+            }
+
+            .back-link {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                margin-bottom: 20px;
+                color: var(--text-color);
+                text-decoration: none;
+                opacity: 0.7;
+                transition:
+                    opacity 0.2s ease,
+                    color 0.2s ease;
+                font-size: 14px;
+            }
+
+            .back-link:hover {
+                opacity: 1;
+                color: var(--link-color);
+            }
+
+            @media (max-width: 768px) {
+                header nav ul {
+                    gap: 30px;
+                    font-size: 14px;
+                }
+
+                .project-container {
+                    padding: 20px 15px 40px 15px;
+                }
+
+                .project-title {
+                    font-size: 26px;
+                }
+
+                .project-icon-large {
+                    width: 60px;
+                    height: 60px;
+                }
+
+                .project-content {
+                    padding: 20px;
+                }
+
+                .project-links {
+                    gap: 12px;
+                }
+
+                .project-link {
+                    padding: 8px 14px;
+                    font-size: 13px;
+                }
+            }
+
+            @media (max-width: 480px) {
+                header {
+                    padding: 14px 10px;
+                }
+
+                header nav ul {
+                    gap: 20px;
+                    font-size: 13px;
+                }
+
+                .project-container {
+                    padding: 20px 15px 30px 15px;
+                }
+
+                .project-title {
+                    font-size: 22px;
+                }
+
+                .project-icon-large {
+                    width: 50px;
+                    height: 50px;
+                }
+
+                .project-content {
+                    padding: 16px;
+                }
+
+                .project-links {
+                    flex-direction: column;
+                    gap: 10px;
+                }
+
+                .project-link {
+                    width: 100%;
+                    justify-content: center;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <header></header>
+
+        <div class="project-container">
+            <a href="../proyectos.html" class="back-link">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span>volver a proyectos</span>
+            </a>
+
+            <div class="project-header">
+                <div class="project-title-wrapper">
+                    <img
+                        src="../src/content/proyectos/fastext/icon.png"
+                        alt="fastext icon"
+                        class="project-icon-large"
+                        loading="eager"
+                        decoding="async"
+                    />
+                    <h1 class="project-title">fastext</h1>
+                </div>
+                <div class="project-links">
+                    <a
+                        href="https://github.com/hatemecha/fastext"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="project-link"
+                    >
+                        <i class="fa-brands fa-github"></i>
+                        <span>Repositorio en GitHub</span>
+                    </a>
+                    <a
+                        href="https://github.com/hatemecha/fastext/releases/download/v1.0.8/FasText_1.0.8_x64_en-US_windows.msi"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="project-link"
+                    >
+                        <i class="fa-solid fa-download"></i>
+                        <span>Descargar</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="project-content">
+                <img
+                    src="../src/content/proyectos/fastext/screenshot.png"
+                    alt="fastext screenshot"
+                    class="project-screenshot"
+                    loading="lazy"
+                    decoding="async"
+                />
+                <h2>Descripción</h2>
+                <p>
+                    Editor de texto minimalista para escritorio construido con
+                    Tauri y Rust. Diseñado para ser simple, rápido y eficiente.
+                </p>
+                <h2>Características</h2>
+                <p>
+                    - Múltiples pestañas para trabajar en varios documentos a la
+                    vez.<br />
+                    - Temas personalizables.<br />
+                    - Soporte para Markdown.<br />
+                    - Interfaz limpia y sin distracciones.<br />
+                </p>
+                <h2>Tecnologías</h2>
+                <p>
+                    Backend: Rust + Tauri 1.5 | Frontend: HTML, CSS, JavaScript
+                </p>
+            </div>
+        </div>
+
+        <footer></footer>
+        <script src="../header.js"></script>
+        <script src="../footer.js"></script>
+    </body>
+</html>
