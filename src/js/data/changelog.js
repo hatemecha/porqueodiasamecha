@@ -1,8 +1,27 @@
 export const changelogData = [
   {
+    date: '2025-11-13',
+    changes: [
+      {
+        type: 'features',
+        items: [
+          'Optimización masiva de imágenes en esquizoposts y fotos (reducción de ~90% en tamaño)',
+          'Implementación de lazy loading para imágenes',
+          'Nueva sección de proyectos con página dedicada',
+          'Agregado proyecto fastext'
+        ]
+      },
+      {
+        type: 'performance',
+        items: [
+          'Mejoras en rendimiento de carga de páginas'
+        ]
+      }
+    ]
+  },
+  {
     date: '2025-11-05',
     changes: [
-      'Release 1.1.1',
       {
         type: 'features',
         items: [
@@ -27,19 +46,12 @@ export const changelogData = [
   {
     date: '2025-11-04',
     changes: [
-      'Release 1.1.0',
       {
         type: 'features',
         items: [
           'Nueva página dump.html'
         ]
       }
-    ]
-  },
-  {
-    date: '2025-11-03',
-    changes: [
-      'Release 1.0.0'
     ]
   }
 ]
