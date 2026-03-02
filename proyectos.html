@@ -9,7 +9,11 @@
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         />
-        <link rel="stylesheet" href="styles.css" />
+        <link rel="stylesheet" href="styles.css?v=20260302-3" />
+        <link
+            rel="stylesheet"
+            href="src/css/components/shared.css?v=20260302-3"
+        />
         <style>
             body {
                 display: flex;
@@ -58,7 +62,7 @@
                 margin: 10px 0 30px 0;
                 text-align: center;
                 letter-spacing: 0.02em;
-                font-family: 'DrukWideBold', sans-serif;
+                font-family: "DrukWideBold", sans-serif;
                 font-size: 26px;
                 width: 100%;
             }
@@ -82,10 +86,10 @@
                 border: 1px solid var(--border-color);
                 background: var(--bg-secondary);
                 padding: 20px;
-                transition: transform 0.2s ease, border-color 0.2s ease;
-                text-decoration: none;
+                transition:
+                    transform 0.2s ease,
+                    border-color 0.2s ease;
                 color: var(--text-color);
-                cursor: pointer;
             }
 
             .project-icon {
@@ -103,7 +107,7 @@
             .project-card h3 {
                 margin: 0;
                 font-size: 20px;
-                font-family: 'DrukWideBold', sans-serif;
+                font-family: "DrukWideBold", sans-serif;
                 color: var(--link-color);
             }
 
@@ -112,6 +116,32 @@
                 font-size: 14px;
                 line-height: 1.6;
                 flex-grow: 1;
+            }
+
+            .project-actions {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .project-link {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                padding: 8px 12px;
+                border: 1px solid var(--border-color);
+                background: var(--bg-color);
+                color: var(--link-color);
+                text-decoration: none;
+                font-size: 13px;
+                transition:
+                    border-color 0.2s ease,
+                    transform 0.2s ease;
+            }
+
+            .project-link:hover {
+                transform: translateY(-1px);
+                border-color: var(--link-color);
             }
 
             @media (max-width: 768px) {
@@ -160,9 +190,8 @@
                     padding: 14px;
                 }
 
-                .project-meta {
+                .project-actions {
                     flex-direction: column;
-                    gap: 10px;
                 }
             }
         </style>
@@ -174,7 +203,7 @@
 
         <div class="projects-container">
             <div class="projects-grid">
-                <a href="proyectos/fastext.html" class="project-card">
+                <article class="project-card">
                     <img
                         src="src/content/proyectos/fastext/icon.png"
                         alt="fastext icon"
@@ -184,15 +213,103 @@
                     />
                     <h3>fastext</h3>
                     <p class="project-description">
-                        Editor de texto minimalista para escritorio construido con Tauri y Rust. Simple, rápido y eficiente con múltiples pestañas, temas personalizables y soporte para Markdown.
+                        Editor de texto minimalista para escritorio construido
+                        con Tauri y Rust.
                     </p>
-                </a>
+                    <div class="project-actions">
+                        <a href="proyectos/fastext.html" class="project-link">
+                            <i class="fa-solid fa-link"></i>
+                            <span>Ver proyecto</span>
+                        </a>
+                        <a
+                            href="https://github.com/hatemecha/fastext"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="project-link"
+                        >
+                            <i class="fa-brands fa-github"></i>
+                            <span>Repositorio</span>
+                        </a>
+                    </div>
+                </article>
+
+                <article class="project-card">
+                    <h3>paprika</h3>
+                    <p class="project-description">
+                        Sitio oficial de la banda Paprika.
+                    </p>
+                    <div class="project-actions">
+                        <a
+                            href="https://paprika.lol/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="project-link"
+                        >
+                            <i class="fa-solid fa-link"></i>
+                            <span>Ver sitio</span>
+                        </a>
+                        <a
+                            href="https://github.com/hatemecha/paprika-web.git"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="project-link"
+                        >
+                            <i class="fa-brands fa-github"></i>
+                            <span>Repositorio</span>
+                        </a>
+                    </div>
+                </article>
+
+                <article class="project-card">
+                    <h3>ruido molesto</h3>
+                    <p class="project-description">
+                        Sitio web para el sello discografico Ruido Molesto.
+                    </p>
+                    <div class="project-actions">
+                        <a
+                            href="https://ruidomolesto.online/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="project-link"
+                        >
+                            <i class="fa-solid fa-link"></i>
+                            <span>Ver sitio</span>
+                        </a>
+                        <a
+                            href="https://github.com/hatemecha/ruido-molesto-web.git"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="project-link"
+                        >
+                            <i class="fa-brands fa-github"></i>
+                            <span>Repositorio</span>
+                        </a>
+                    </div>
+                </article>
+
+                <article class="project-card">
+                    <h3>hatewebcam (beta)</h3>
+                    <p class="project-description">
+                        Beta de webcam con efectos en tiempo real.
+                    </p>
+                    <div class="project-actions">
+                        <a
+                            href="https://github.com/hatemecha/hatewebcam-web.git"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="project-link"
+                        >
+                            <i class="fa-brands fa-github"></i>
+                            <span>Repositorio</span>
+                        </a>
+                    </div>
+                </article>
             </div>
         </div>
 
         <footer></footer>
-        <script src="themes.js"></script>
-        <script src="header.js"></script>
-        <script src="footer.js"></script>
+        <script src="themes.js?v=20260302-3"></script>
+        <script src="header.js?v=20260302-3"></script>
+        <script src="footer.js?v=20260302-3"></script>
     </body>
 </html>

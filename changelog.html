@@ -5,10 +5,19 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="icon" href="/favicon.ico" />
         <title>changelog • hatemecha</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-        <link rel="stylesheet" href="styles.css?v=20260302-2" />
-        <link rel="stylesheet" href="src/css/components/shared.css?v=20260302-2" />
-        <link rel="stylesheet" href="src/css/pages/changelog.css?v=20260302-2" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        />
+        <link rel="stylesheet" href="styles.css?v=20260302-3" />
+        <link
+            rel="stylesheet"
+            href="src/css/components/shared.css?v=20260302-3"
+        />
+        <link
+            rel="stylesheet"
+            href="src/css/pages/changelog.css?v=20260302-3"
+        />
     </head>
     <body>
         <header></header>
@@ -20,72 +29,82 @@
         </div>
 
         <footer></footer>
-        <script src="themes.js?v=20260302-2"></script>
-        <script src="header.js?v=20260302-2"></script>
-        <script src="footer.js?v=20260302-2"></script>
+        <script src="themes.js?v=20260302-3"></script>
+        <script src="header.js?v=20260302-3"></script>
+        <script src="footer.js?v=20260302-3"></script>
         <script type="module">
-            const changelogEl = document.getElementById('changelog')
+            const changelogEl = document.getElementById("changelog");
 
             function renderError(message) {
-                if (!changelogEl) return
-                changelogEl.innerHTML = `<div class="change-item">${message}</div>`
+                if (!changelogEl) return;
+                changelogEl.innerHTML = `<div class="change-item">${message}</div>`;
             }
 
             function groupByDate(data) {
-                const grouped = {}
-                data.forEach(entry => {
+                const grouped = {};
+                data.forEach((entry) => {
                     if (!grouped[entry.date]) {
-                        grouped[entry.date] = []
+                        grouped[entry.date] = [];
                     }
-                    grouped[entry.date].push(...entry.changes)
-                })
-                return grouped
+                    grouped[entry.date].push(...entry.changes);
+                });
+                return grouped;
             }
 
             function renderChange(change) {
                 // Si es un objeto con sección (type e items)
-                if (typeof change === 'object' && change.type && change.items) {
-                    const sectionTitle = change.type.charAt(0).toUpperCase() + change.type.slice(1) + ':'
+                if (typeof change === "object" && change.type && change.items) {
+                    const sectionTitle =
+                        change.type.charAt(0).toUpperCase() +
+                        change.type.slice(1) +
+                        ":";
                     return `
                         <div class="change-section">
                             <div class="change-section-title">${sectionTitle}</div>
                             <ul class="change-section-list">
-                                ${change.items.map(item => `<li>${item}</li>`).join('')}
+                                ${change.items.map((item) => `<li>${item}</li>`).join("")}
                             </ul>
                         </div>
-                    `
+                    `;
                 }
                 // Si es un string simple
-                return `<div class="change-item">${change}</div>`
+                return `<div class="change-item">${change}</div>`;
             }
 
             function renderChangelog(formatDate, changelogData) {
-                if (!changelogEl) return
-                const grouped = groupByDate(changelogData)
-                const sortedDates = Object.keys(grouped).sort((a, b) => new Date(b) - new Date(a))
+                if (!changelogEl) return;
+                const grouped = groupByDate(changelogData);
+                const sortedDates = Object.keys(grouped).sort(
+                    (a, b) => new Date(b) - new Date(a),
+                );
 
-                changelogEl.innerHTML = sortedDates.map(date => `
+                changelogEl.innerHTML = sortedDates
+                    .map(
+                        (date) => `
                     <div class="date-entry">
                         <div class="date-header">${formatDate(date)}</div>
                         <div class="date-changes">
-                            ${grouped[date].map(change => renderChange(change)).join('')}
+                            ${grouped[date].map((change) => renderChange(change)).join("")}
                         </div>
                     </div>
-                `).join('')
+                `,
+                    )
+                    .join("");
             }
 
-            ;(async () => {
+            (async () => {
                 try {
-                    const [{ formatDate }, { changelogData }] = await Promise.all([
-                        import('./src/js/utils/dateFormatter.js'),
-                        import('./src/js/data/changelog.js')
-                    ])
-                    renderChangelog(formatDate, changelogData)
+                    const [{ formatDate }, { changelogData }] =
+                        await Promise.all([
+                            import("./src/js/utils/dateFormatter.js"),
+                            import("./src/js/data/changelog.js"),
+                        ]);
+                    renderChangelog(formatDate, changelogData);
                 } catch (error) {
-                    console.error('Error cargando changelog:', error)
-                    renderError('No se pudo cargar el changelog.')
+                    console.error("Error cargando changelog:", error);
+                    renderError("No se pudo cargar el changelog.");
                 }
-            })()
+            })();
         </script>
     </body>
 </html>

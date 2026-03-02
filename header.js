@@ -1,31 +1,46 @@
 // Header reutilizable para todas las páginas
 // Detecta automáticamente la página actual y marca el enlace activo
 
-;(() => {
+(() => {
   // Aplicar tema inmediatamente al cargar
-  const savedTheme = localStorage.getItem('theme') || 'light'
-  const html = document.documentElement
-  const darkThemeIds = themes.filter(t => t.id !== 'light').map(t => t.id)
+  const savedTheme = localStorage.getItem("theme") || "light";
+  const html = document.documentElement;
+  const darkThemeIds = themes.filter((t) => t.id !== "light").map((t) => t.id);
   if (darkThemeIds.includes(savedTheme)) {
-    html.setAttribute('data-theme', savedTheme)
+    html.setAttribute("data-theme", savedTheme);
   } else {
-    html.removeAttribute('data-theme')
+    html.removeAttribute("data-theme");
   }
 
-  const currentPage = window.location.pathname.split('/').pop() || 'index.html'
-  
-  const pages = [
-    { url: 'index.html', label: 'home' },
-    { url: 'musica.html', label: 'musica' },
-    { url: 'fotos.html', label: 'fotos' },
-    { url: 'dump.html', label: 'dump' },
-    { url: 'changelog.html', label: 'changelog' }
-  ]
+  const script = document.currentScript;
+  const siteRootPath = script
+    ? new URL(".", script.src).pathname
+    : window.location.pathname.replace(/[^/]*$/, "");
+  const currentPage = window.location.pathname.split("/").pop() || "index.html";
+  const relativePath = window.location.pathname.startsWith(siteRootPath)
+    ? window.location.pathname.slice(siteRootPath.length)
+    : currentPage;
 
+  const resolveHref = (file) => {
+    try {
+      return new URL(file, script ? script.src : window.location.href).pathname;
+    } catch (e) {
+      return file;
+    }
+  };
+
+  const pages = [
+    { url: "index.html", label: "home" },
+    { url: "musica.html", label: "musica" },
+    { url: "fotos.html", label: "fotos" },
+    { url: "dump.html", label: "dump" },
+    { url: "proyectos.html", label: "proyectos" },
+    { url: "changelog.html", label: "changelog" },
+  ];
 
   const renderHeader = () => {
-    const header = document.querySelector('header')
-    if (!header) return
+    const header = document.querySelector("header");
+    if (!header) return;
 
     header.innerHTML = `
       <div class="header-title-wrapper">
@@ -37,7 +52,7 @@
             <i class="fa-brands fa-github"></i>
           </a>
         </div>
-        <h1><a href="index.html">hatemecha</a></h1>
+        <h1><a href="${resolveHref("index.html")}">hatemecha</a></h1>
         <div class="header-controls">
           <button type="button" class="model-selector" id="model-selector" aria-label="Cambiar modelo 3D"></button>
           <button type="button" class="theme-selector" id="theme-selector" aria-label="Cambiar tema"></button>
@@ -45,106 +60,115 @@
       </div>
       <nav>
         <ul>
-          ${pages.map(page => {
-            const isActive = page.url === currentPage
-            return `<li><a href="${page.url}" ${isActive ? 'class="active"' : ''}>${page.label}</a></li>`
-          }).join('')}
+          ${pages
+            .map((page) => {
+              const isProjectsSection =
+                page.url === "proyectos.html" &&
+                relativePath.startsWith("proyectos/");
+              const isActive = page.url === currentPage || isProjectsSection;
+              return `<li><a href="${resolveHref(page.url)}" ${isActive ? 'class="active"' : ""}>${page.label}</a></li>`;
+            })
+            .join("")}
         </ul>
       </nav>
-    `
-  }
+    `;
+  };
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-      renderHeader()
-      initTheme()
-    })
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => {
+      renderHeader();
+      initTheme();
+    });
   } else {
-    renderHeader()
-    initTheme()
+    renderHeader();
+    initTheme();
   }
 
   function getCurrentThemeIndex() {
-    const savedTheme = localStorage.getItem('theme') || 'light'
-    const index = themes.findIndex(t => t.id === savedTheme)
-    return index >= 0 ? index : 0
+    const savedTheme = localStorage.getItem("theme") || "light";
+    const index = themes.findIndex((t) => t.id === savedTheme);
+    return index >= 0 ? index : 0;
   }
 
   function updateModelSelector() {
-    const modelSelector = document.getElementById('model-selector')
-    if (!modelSelector) return
-    
-    const currentIndex = getCurrentThemeIndex()
-    const currentTheme = themes[currentIndex]
-    const secondaryColor = currentTheme.colors[1]
-    
+    const modelSelector = document.getElementById("model-selector");
+    if (!modelSelector) return;
+
+    const currentIndex = getCurrentThemeIndex();
+    const currentTheme = themes[currentIndex];
+    const secondaryColor = currentTheme.colors[1];
+
     // Icono genérico de modelo 3D
-    modelSelector.innerHTML = `<i class="fa-solid fa-cube" style="color: ${secondaryColor}"></i>`
+    modelSelector.innerHTML = `<i class="fa-solid fa-cube" style="color: ${secondaryColor}"></i>`;
   }
 
   function updateThemeSelectorColors() {
-    const themeSelector = document.getElementById('theme-selector')
-    
+    const themeSelector = document.getElementById("theme-selector");
+
     if (themeSelector) {
-      const currentIndex = getCurrentThemeIndex()
-      const currentTheme = themes[currentIndex]
-      const secondaryColor = currentTheme.colors[1]
-      
-      themeSelector.innerHTML = `<div class="color-swatch" style="background-color: ${secondaryColor}"></div>`
+      const currentIndex = getCurrentThemeIndex();
+      const currentTheme = themes[currentIndex];
+      const secondaryColor = currentTheme.colors[1];
+
+      themeSelector.innerHTML = `<div class="color-swatch" style="background-color: ${secondaryColor}"></div>`;
     }
-    
-    updateModelSelector()
+
+    updateModelSelector();
   }
 
   function cycleTheme() {
-    const currentIndex = getCurrentThemeIndex()
-    const nextIndex = (currentIndex + 1) % themes.length
-    const nextTheme = themes[nextIndex]
-    
-    applyTheme(nextTheme.id)
-    localStorage.setItem('theme', nextTheme.id)
-    updateThemeSelectorColors()
+    const currentIndex = getCurrentThemeIndex();
+    const nextIndex = (currentIndex + 1) % themes.length;
+    const nextTheme = themes[nextIndex];
+
+    applyTheme(nextTheme.id);
+    localStorage.setItem("theme", nextTheme.id);
+    updateThemeSelectorColors();
   }
 
   function initTheme() {
-    const savedTheme = localStorage.getItem('theme') || 'light'
-    applyTheme(savedTheme)
-    updateThemeSelectorColors()
-    
-    const themeSelector = document.getElementById('theme-selector')
+    const savedTheme = localStorage.getItem("theme") || "light";
+    applyTheme(savedTheme);
+    updateThemeSelectorColors();
+
+    const themeSelector = document.getElementById("theme-selector");
     if (themeSelector) {
-      themeSelector.addEventListener('click', cycleTheme)
+      themeSelector.addEventListener("click", cycleTheme);
     }
 
-    const modelSelector = document.getElementById('model-selector')
+    const modelSelector = document.getElementById("model-selector");
     if (modelSelector) {
-      modelSelector.addEventListener('click', () => {
+      modelSelector.addEventListener("click", () => {
         if (window.changeModel) {
-          window.changeModel()
+          window.changeModel();
         }
-      })
+      });
     }
 
     // Escuchar cambios de modelo
-    window.addEventListener('modelchange', updateModelSelector)
-    
+    window.addEventListener("modelchange", updateModelSelector);
+
     // Actualizar cuando cambie el tema también
-    window.addEventListener('themechange', updateModelSelector)
+    window.addEventListener("themechange", updateModelSelector);
   }
 
   function applyTheme(themeId) {
-    const html = document.documentElement
-    const darkThemeIds = themes.filter(t => t.id !== 'light').map(t => t.id)
-    
+    const html = document.documentElement;
+    const darkThemeIds = themes
+      .filter((t) => t.id !== "light")
+      .map((t) => t.id);
+
     if (darkThemeIds.includes(themeId)) {
-      html.setAttribute('data-theme', themeId)
+      html.setAttribute("data-theme", themeId);
     } else {
-      html.removeAttribute('data-theme')
+      html.removeAttribute("data-theme");
     }
 
     requestAnimationFrame(() => {
-      const event = new CustomEvent('themechange', { detail: { theme: themeId } })
-      window.dispatchEvent(event)
-    })
+      const event = new CustomEvent("themechange", {
+        detail: { theme: themeId },
+      });
+      window.dispatchEvent(event);
+    });
   }
-})()
+})();

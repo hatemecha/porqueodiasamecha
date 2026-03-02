@@ -5,11 +5,20 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="icon" href="/favicon.ico" />
         <title>fotos • hatemecha</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-        <link rel="stylesheet" href="styles.css?v=20260302-2" />
-        <link rel="stylesheet" href="src/css/components/shared.css?v=20260302-2" />
-        <link rel="stylesheet" href="src/css/components/lightbox.css?v=20260302-2" />
-        <link rel="stylesheet" href="src/css/pages/fotos.css?v=20260302-2" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        />
+        <link rel="stylesheet" href="styles.css?v=20260302-3" />
+        <link
+            rel="stylesheet"
+            href="src/css/components/shared.css?v=20260302-3"
+        />
+        <link
+            rel="stylesheet"
+            href="src/css/components/lightbox.css?v=20260302-3"
+        />
+        <link rel="stylesheet" href="src/css/pages/fotos.css?v=20260302-3" />
         <style>
             header {
                 z-index: 9999;
@@ -33,38 +42,41 @@
         </div>
 
         <script type="module">
-            import { createImageLoader } from './src/js/utils/imageLoader.js'
-            import { initLightbox } from './src/js/components/lightbox.js'
-            import { fotosImages, fotosBasePath } from './src/js/data/images.js'
+            import { createImageLoader } from "./src/js/utils/imageLoader.js";
+            import { initLightbox } from "./src/js/components/lightbox.js";
+            import {
+                fotosImages,
+                fotosBasePath,
+            } from "./src/js/data/images.js";
 
-            const galleryEl = document.getElementById('gallery')
-            const loadImage = createImageLoader({ eagerCount: 3 })
+            const galleryEl = document.getElementById("gallery");
+            const loadImage = createImageLoader({ eagerCount: 3 });
 
             function createItem(src, alt, index) {
-                const item = document.createElement('div')
-                item.className = 'gallery-item'
+                const item = document.createElement("div");
+                item.className = "gallery-item";
 
-                const img = document.createElement('img')
-                img.src = src
-                img.alt = alt
+                const img = document.createElement("img");
+                img.src = src;
+                img.alt = alt;
 
-                loadImage(img, index)
+                loadImage(img, index);
 
-                item.appendChild(img)
-                return item
+                item.appendChild(img);
+                return item;
             }
 
             fotosImages.forEach((name, index) => {
-                const src = fotosBasePath + name
-                const alt = name.replace(/\.JPG$/i, '')
-                galleryEl.appendChild(createItem(src, alt, index))
-            })
+                const src = fotosBasePath + name;
+                const alt = name.replace(/\.JPG$/i, "");
+                galleryEl.appendChild(createItem(src, alt, index));
+            });
 
-            initLightbox({ selector: '.gallery-item img' })
+            initLightbox({ selector: ".gallery-item img" });
         </script>
         <footer></footer>
-        <script src="themes.js?v=20260302-2"></script>
-        <script src="header.js?v=20260302-2"></script>
-        <script src="footer.js?v=20260302-2"></script>
+        <script src="themes.js?v=20260302-3"></script>
+        <script src="header.js?v=20260302-3"></script>
+        <script src="footer.js?v=20260302-3"></script>
     </body>
 </html>

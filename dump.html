@@ -5,11 +5,20 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="icon" href="/favicon.ico" />
         <title>dump • hatemecha</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-        <link rel="stylesheet" href="styles.css?v=20260302-2" />
-        <link rel="stylesheet" href="src/css/components/shared.css?v=20260302-2" />
-        <link rel="stylesheet" href="src/css/components/carousel.css?v=20260302-2" />
-        <link rel="stylesheet" href="src/css/pages/dump.css?v=20260302-2" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        />
+        <link rel="stylesheet" href="styles.css?v=20260302-3" />
+        <link
+            rel="stylesheet"
+            href="src/css/components/shared.css?v=20260302-3"
+        />
+        <link
+            rel="stylesheet"
+            href="src/css/components/carousel.css?v=20260302-3"
+        />
+        <link rel="stylesheet" href="src/css/pages/dump.css?v=20260302-3" />
     </head>
     <body>
         <header></header>
@@ -19,56 +28,55 @@
         <div class="posts" id="posts"></div>
 
         <footer></footer>
-        <script src="themes.js?v=20260302-2"></script>
-        <script src="header.js?v=20260302-2"></script>
-        <script src="footer.js?v=20260302-2"></script>
+        <script src="themes.js?v=20260302-3"></script>
+        <script src="header.js?v=20260302-3"></script>
+        <script src="footer.js?v=20260302-3"></script>
         <script type="module">
-            import { Carousel } from './src/js/components/carousel.js'
-            import { dumpPosts } from './src/js/data/dump.js'
+            import { Carousel } from "./src/js/components/carousel.js";
+            import { dumpPosts } from "./src/js/data/dump.js";
 
-            const carouselInstances = {}
+            const carouselInstances = {};
 
             function createPost(post, index) {
-                const postEl = document.createElement('div')
-                postEl.className = 'post'
+                const postEl = document.createElement("div");
+                postEl.className = "post";
 
-                const media = document.createElement('div')
-                media.className = 'post-media'
-                
+                const media = document.createElement("div");
+                media.className = "post-media";
+
                 if (post.images && post.images.length > 0) {
-                    const container = document.createElement('div')
-                    container.setAttribute('data-post-id', `post-${index}`)
-                    const carousel = new Carousel(container, post.images)
-                    carouselInstances[`post-${index}`] = carousel
-                    media.appendChild(container)
+                    const container = document.createElement("div");
+                    container.setAttribute("data-post-id", `post-${index}`);
+                    const carousel = new Carousel(container, post.images);
+                    carouselInstances[`post-${index}`] = carousel;
+                    media.appendChild(container);
                 }
 
-                const info = document.createElement('div')
-                info.className = 'post-info'
+                const info = document.createElement("div");
+                info.className = "post-info";
 
                 if (post.title) {
-                    const title = document.createElement('h2')
-                    title.textContent = post.title
-                    info.appendChild(title)
+                    const title = document.createElement("h2");
+                    title.textContent = post.title;
+                    info.appendChild(title);
                 }
 
                 if (post.description) {
-                    const description = document.createElement('p')
-                    description.textContent = post.description
-                    info.appendChild(description)
+                    const description = document.createElement("p");
+                    description.textContent = post.description;
+                    info.appendChild(description);
                 }
 
-                postEl.appendChild(media)
-                postEl.appendChild(info)
+                postEl.appendChild(media);
+                postEl.appendChild(info);
 
-                return postEl
+                return postEl;
             }
 
-            const postsEl = document.getElementById('posts')
+            const postsEl = document.getElementById("posts");
             dumpPosts.forEach((post, index) => {
-                postsEl.appendChild(createPost(post, index))
-            })
+                postsEl.appendChild(createPost(post, index));
+            });
         </script>
     </body>
 </html>
-
