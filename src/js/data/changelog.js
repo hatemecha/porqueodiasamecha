@@ -5,6 +5,33 @@ export const changelogData = [
       {
         type: 'features',
         items: [
+          'Restaurada la sección proyectos en el header',
+          'Agregados proyectos paprika, ruido molesto y hatewebcam en proyectos.html',
+          'Agregados iconos locales para paprika, ruido molesto y hatewebcam'
+        ]
+      },
+      {
+        type: 'bugfix',
+        items: [
+          'Corregidas rutas del header para navegar correctamente desde subdirectorios',
+          'Corregido marcado activo de navegación en sección de proyectos',
+          'Endurecida la carga de módulos del changelog para mostrar error controlado si falla'
+        ]
+      },
+      {
+        type: 'refactor',
+        items: [
+          'Ajustado versionado de assets para invalidar caché del navegador'
+        ]
+      }
+    ]
+  },
+  {
+    date: '2026-03-02',
+    changes: [
+      {
+        type: 'features',
+        items: [
           'Controles de tema y modelo del header convertidos en botones accesibles',
           'Navegación simplificada al retirar las páginas lab y esquizoposts'
         ]

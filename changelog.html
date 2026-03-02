@@ -9,14 +9,14 @@
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         />
-        <link rel="stylesheet" href="styles.css?v=20260302-3" />
+        <link rel="stylesheet" href="styles.css?v=20260302-4" />
         <link
             rel="stylesheet"
-            href="src/css/components/shared.css?v=20260302-3"
+            href="src/css/components/shared.css?v=20260302-4"
         />
         <link
             rel="stylesheet"
-            href="src/css/pages/changelog.css?v=20260302-3"
+            href="src/css/pages/changelog.css?v=20260302-4"
         />
     </head>
     <body>
@@ -29,9 +29,9 @@
         </div>
 
         <footer></footer>
-        <script src="themes.js?v=20260302-3"></script>
-        <script src="header.js?v=20260302-3"></script>
-        <script src="footer.js?v=20260302-3"></script>
+        <script src="themes.js?v=20260302-4"></script>
+        <script src="header.js?v=20260302-4"></script>
+        <script src="footer.js?v=20260302-4"></script>
         <script type="module">
             const changelogEl = document.getElementById("changelog");
 
@@ -96,8 +96,8 @@
                 try {
                     const [{ formatDate }, { changelogData }] =
                         await Promise.all([
-                            import("./src/js/utils/dateFormatter.js"),
-                            import("./src/js/data/changelog.js"),
+                            import("./src/js/utils/dateFormatter.js?v=20260302-4"),
+                            import("./src/js/data/changelog.js?v=20260302-4"),
                         ]);
                     renderChangelog(formatDate, changelogData);
                 } catch (error) {
