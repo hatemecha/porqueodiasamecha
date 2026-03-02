@@ -24,10 +24,12 @@
         <script src="header.js"></script>
         <script src="footer.js"></script>
         <script type="module">
-            import { formatDate } from './src/js/utils/dateFormatter.js'
-            import { changelogData } from './src/js/data/changelog.js'
-
             const changelogEl = document.getElementById('changelog')
+
+            function renderError(message) {
+                if (!changelogEl) return
+                changelogEl.innerHTML = `<div class="change-item">${message}</div>`
+            }
 
             function groupByDate(data) {
                 const grouped = {}
@@ -57,10 +59,11 @@
                 return `<div class="change-item">${change}</div>`
             }
 
-            function renderChangelog() {
+            function renderChangelog(formatDate, changelogData) {
+                if (!changelogEl) return
                 const grouped = groupByDate(changelogData)
                 const sortedDates = Object.keys(grouped).sort((a, b) => new Date(b) - new Date(a))
-                
+
                 changelogEl.innerHTML = sortedDates.map(date => `
                     <div class="date-entry">
                         <div class="date-header">${formatDate(date)}</div>
@@ -71,7 +74,18 @@
                 `).join('')
             }
 
-            renderChangelog()
+            ;(async () => {
+                try {
+                    const [{ formatDate }, { changelogData }] = await Promise.all([
+                        import('./src/js/utils/dateFormatter.js'),
+                        import('./src/js/data/changelog.js')
+                    ])
+                    renderChangelog(formatDate, changelogData)
+                } catch (error) {
+                    console.error('Error cargando changelog:', error)
+                    renderError('No se pudo cargar el changelog.')
+                }
+            })()
         </script>
     </body>
 </html>
