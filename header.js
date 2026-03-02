@@ -19,8 +19,6 @@
   
   const pages = [
     { url: 'index.html', label: 'home' },
-    { url: 'esquizoposts.html', label: 'esquizoposts' },
-    { url: 'lab.html', label: 'lab' },
     { url: 'musica.html', label: 'musica' },
     { url: 'fotos.html', label: 'fotos' },
     { url: 'dump.html', label: 'dump' },
@@ -45,8 +43,8 @@
         </div>
         <h1><a href="${basePath}index.html">hatemecha</a></h1>
         <div class="header-controls">
-          <div class="model-selector" id="model-selector" aria-label="Cambiar modelo 3D"></div>
-          <div class="theme-selector" id="theme-selector" aria-label="Cambiar tema"></div>
+          <button type="button" class="model-selector" id="model-selector" aria-label="Cambiar modelo 3D"></button>
+          <button type="button" class="theme-selector" id="theme-selector" aria-label="Cambiar tema"></button>
         </div>
       </div>
       <nav>
@@ -154,4 +152,3 @@
     })
   }
 })()
-

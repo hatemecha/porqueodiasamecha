@@ -212,6 +212,67 @@ let currentModel = null
 let isUserInteracting = false
 let currentModelIndex = 0
 
+const materialTextureKeys = [
+    'map',
+    'alphaMap',
+    'aoMap',
+    'bumpMap',
+    'displacementMap',
+    'emissiveMap',
+    'envMap',
+    'lightMap',
+    'metalnessMap',
+    'normalMap',
+    'roughnessMap',
+    'specularMap',
+    'clearcoatMap',
+    'clearcoatNormalMap',
+    'clearcoatRoughnessMap',
+    'iridescenceMap',
+    'iridescenceThicknessMap',
+    'sheenColorMap',
+    'sheenRoughnessMap',
+    'transmissionMap',
+    'thicknessMap',
+    'anisotropyMap'
+]
+
+function disposeMaterial(material, disposedTextures) {
+    materialTextureKeys.forEach((key) => {
+        const texture = material[key]
+        if (texture && typeof texture.dispose === 'function' && !disposedTextures.has(texture)) {
+            disposedTextures.add(texture)
+            texture.dispose()
+        }
+    })
+
+    material.dispose()
+}
+
+function disposeObjectResources(root) {
+    const disposedTextures = new Set()
+
+    root.traverse((child) => {
+        if (child.geometry) {
+            child.geometry.dispose()
+        }
+
+        if (!child.material) {
+            return
+        }
+
+        const materials = Array.isArray(child.material)
+            ? child.material
+            : [child.material]
+
+        materials.forEach((material) => {
+            if (material) {
+                disposeMaterial(material, disposedTextures)
+            }
+        })
+    })
+}
+
 // Función para notificar cambio de modelo
 function notifyModelChange() {
     const event = new CustomEvent('modelchange', { 
@@ -246,16 +307,10 @@ function loadModel(modelPath) {
     
     // Limpiar modelos anteriores SOLO dentro del pivote
     ;[...pivot.children].forEach((obj) => {
-        if (obj.geometry) obj.geometry.dispose()
-        if (obj.material) {
-            if (Array.isArray(obj.material)) {
-                obj.material.forEach((mat) => mat.dispose())
-            } else {
-                obj.material.dispose()
-            }
-        }
+        disposeObjectResources(obj)
         pivot.remove(obj)
     })
+    currentModel = null
     
     loader.load(
         modelPath,
@@ -327,4 +382,3 @@ function animate() {
 }
 
 animate()
-

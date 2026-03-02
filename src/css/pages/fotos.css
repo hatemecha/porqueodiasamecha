@@ -73,11 +73,6 @@
   transform: scale(1.01);
 }
 
-.gallery-item a {
-  position: absolute;
-  inset: 0;
-}
-
 @media (max-width: 768px) {
   body {
     padding: 0;

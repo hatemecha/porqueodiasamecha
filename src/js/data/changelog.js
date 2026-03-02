@@ -1,5 +1,30 @@
 export const changelogData = [
   {
+    date: '2026-03-02',
+    changes: [
+      {
+        type: 'features',
+        items: [
+          'Controles de tema y modelo del header convertidos en botones accesibles',
+          'Navegación simplificada al retirar las páginas lab y esquizoposts'
+        ]
+      },
+      {
+        type: 'bugfix',
+        items: [
+          'Corregido el conflicto de interacción entre la galería de fotos y el lightbox',
+          'Corregida la liberación de geometrías, materiales y texturas al cambiar modelos 3D'
+        ]
+      },
+      {
+        type: 'refactor',
+        items: [
+          'Eliminadas las páginas lab.html y esquizoposts.html del proyecto'
+        ]
+      }
+    ]
+  },
+  {
     date: '2025-11-13',
     changes: [
       {
@@ -62,4 +87,3 @@ export const changelogData = [
     ]
   }
 ]
-
