@@ -12,17 +12,13 @@
     html.removeAttribute('data-theme')
   }
 
-  const pathParts = window.location.pathname.split('/').filter(p => p)
-  const currentPage = pathParts[pathParts.length - 1] || 'index.html'
-  const isInSubfolder = pathParts.length > 1
-  const basePath = isInSubfolder ? '../' : ''
+  const currentPage = window.location.pathname.split('/').pop() || 'index.html'
   
   const pages = [
     { url: 'index.html', label: 'home' },
     { url: 'musica.html', label: 'musica' },
     { url: 'fotos.html', label: 'fotos' },
     { url: 'dump.html', label: 'dump' },
-    { url: 'proyectos.html', label: 'proyectos' },
     { url: 'changelog.html', label: 'changelog' }
   ]
 
@@ -41,7 +37,7 @@
             <i class="fa-brands fa-github"></i>
           </a>
         </div>
-        <h1><a href="${basePath}index.html">hatemecha</a></h1>
+        <h1><a href="index.html">hatemecha</a></h1>
         <div class="header-controls">
           <button type="button" class="model-selector" id="model-selector" aria-label="Cambiar modelo 3D"></button>
           <button type="button" class="theme-selector" id="theme-selector" aria-label="Cambiar tema"></button>
@@ -50,8 +46,8 @@
       <nav>
         <ul>
           ${pages.map(page => {
-            const isActive = page.url === currentPage || (page.url === 'proyectos.html' && isInSubfolder && pathParts[0] === 'proyectos')
-            return `<li><a href="${basePath}${page.url}" ${isActive ? 'class="active"' : ''}>${page.label}</a></li>`
+            const isActive = page.url === currentPage
+            return `<li><a href="${page.url}" ${isActive ? 'class="active"' : ''}>${page.label}</a></li>`
           }).join('')}
         </ul>
       </nav>
